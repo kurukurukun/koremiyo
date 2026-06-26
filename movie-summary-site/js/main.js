@@ -133,6 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const newUrl = new URL(window.location);
         newUrl.searchParams.delete('movie');
         window.history.pushState(null, '', newUrl);
+
+        // SEO対策: タイトルを元に戻す
+        document.title = "コレミヨ (KOREMIYO) - 歴代アカデミー賞から厳選！外さないおすすめ名作映画まとめ";
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.setAttribute('content', "コレミヨ(KOREMIYO) - 歴代アカデミー賞から厳選！外さないおすすめ名作映画");
     });
 
     // Listen for custom 'openMovie' event triggered by ui.js
@@ -226,6 +231,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newUrl = new URL(window.location);
                 newUrl.searchParams.delete('movie');
                 window.history.pushState(null, '', newUrl);
+
+                // SEO対策: タイトルを元に戻す
+                document.title = "コレミヨ (KOREMIYO) - 今日の映画選びを絶対に外さない";
+                const ogTitle = document.querySelector('meta[property="og:title"]');
+                if (ogTitle) ogTitle.setAttribute('content', "コレミヨ (KOREMIYO)");
             }
         }
     });
@@ -238,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.dispatchEvent(new CustomEvent('openMovie', { detail: { id: movieIdFromUrl, skipUrlUpdate: true } }));
         } else {
             ui.hideModal('movieModal');
+            document.title = "コレミヨ (KOREMIYO) - 今日の映画選びを絶対に外さない";
         }
     });
 });

@@ -218,6 +218,11 @@ class UIManager {
             </div>
         `;
         this.showModal('movieModal');
+
+        // SPA SEO対策: 動的タイトルの変更
+        document.title = `${movie.title} - コレミヨ(KOREMIYO) | おすすめ名作映画`;
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.setAttribute('content', `${movie.title} - コレミヨ(KOREMIYO)`);
     }
 
     showModal(modalId) {
