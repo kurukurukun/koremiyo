@@ -584,7 +584,29 @@ header.scrolled {
 }
 
 .rating-btn:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.amazon-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: linear-gradient(135deg, #FF9900 0%, #FFB84D 100%);
+    color: #1a1d24;
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
+}
+
+.amazon-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 153, 0, 0.5);
+    color: #1a1d24;
 }
 
 /* Settings Form */

@@ -5,11 +5,20 @@ import MovieDetails from '@/components/MovieDetails';
 export default async function MovieModalPage({ params }: { params: { id: string } }) {
   let movie;
   let jpProviders = null;
+  let isAmazonAvailable = false;
   
   try {
     movie = await fetchTMDBServer(`movie/${params.id}`, { append_to_response: 'credits,videos' });
     const providersData = await fetchTMDBServer(`movie/${params.id}/watch/providers`);
-    jpProviders = providersData.results?.JP?.flatrate || null;
+    const jpData = providersData.results?.JP || {};
+    jpProviders = jpData.flatrate || null;
+    
+    const allProviders = [
+      ...(jpData.flatrate || []),
+      ...(jpData.rent || []),
+      ...(jpData.buy || [])
+    ];
+    isAmazonAvailable = allProviders.some((p: any) => p.provider_name.includes('Amazon'));
   } catch (e) {
     return (
       <Modal>
@@ -20,7 +29,7 @@ export default async function MovieModalPage({ params }: { params: { id: string 
 
   return (
     <Modal>
-      <MovieDetails movie={movie} jpProviders={jpProviders} isModal={true} />
+      <MovieDetails movie={movie} jpProviders={jpProviders} isModal={true} isAmazonAvailable={isAmazonAvailable} />
     </Modal>
   );
 }

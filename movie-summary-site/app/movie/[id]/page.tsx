@@ -33,11 +33,20 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 export default async function MoviePage({ params }: { params: { id: string } }) {
   let movie;
   let jpProviders = null;
+  let isAmazonAvailable = false;
   
   try {
     movie = await fetchTMDBServer(`movie/${params.id}`, { append_to_response: 'credits,videos' });
     const providersData = await fetchTMDBServer(`movie/${params.id}/watch/providers`);
-    jpProviders = providersData.results?.JP?.flatrate || null;
+    const jpData = providersData.results?.JP || {};
+    jpProviders = jpData.flatrate || null;
+    
+    const allProviders = [
+      ...(jpData.flatrate || []),
+      ...(jpData.rent || []),
+      ...(jpData.buy || [])
+    ];
+    isAmazonAvailable = allProviders.some((p: any) => p.provider_name.includes('Amazon'));
   } catch (e) {
     return <div style={{ padding: '4rem', textAlign: 'center' }}>映画情報の取得に失敗しました。</div>;
   }
@@ -65,7 +74,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
       <Modal isFallback={true}>
-        <MovieDetails movie={movie} jpProviders={jpProviders} isModal={true} />
+        <MovieDetails movie={movie} jpProviders={jpProviders} isModal={true} isAmazonAvailable={isAmazonAvailable} />
       </Modal>
     </>
   );

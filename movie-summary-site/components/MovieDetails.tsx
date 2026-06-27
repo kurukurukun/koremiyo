@@ -7,7 +7,7 @@ import { trendingMovies } from '@/lib/data/trending';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
-export default function MovieDetails({ movie, jpProviders, isModal = false }: { movie: any, jpProviders: any, isModal?: boolean }) {
+export default function MovieDetails({ movie, jpProviders, isModal = false, isAmazonAvailable = false }: { movie: any, jpProviders: any, isModal?: boolean, isAmazonAvailable?: boolean }) {
   const posterUrl = api.getImageUrl(movie.poster_path, 'w500');
   const backdropUrl = movie.backdrop_path ? api.getImageUrl(movie.backdrop_path, 'original') : '';
   const rating = movie.vote_average ? movie.vote_average.toFixed(1) : '-';
@@ -97,6 +97,22 @@ export default function MovieDetails({ movie, jpProviders, isModal = false }: { 
                     <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{p.name}</span>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+          
+          {isAmazonAvailable && (
+            <div style={{ marginTop: '1.5rem' }}>
+              <a 
+                href={`https://www.amazon.co.jp/s?k=${encodeURIComponent(movie.title + ' 映画')}&i=instant-video&tag=${process.env.NEXT_PUBLIC_AMAZON_TAG || 'koremiyo-22'}`} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="amazon-btn"
+              >
+                <i className="fa-brands fa-amazon"></i> Amazon Prime Videoで観る
+              </a>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.5rem', opacity: 0.8 }}>
+                ※Amazonアソシエイトリンクを使用しています
               </div>
             </div>
           )}
