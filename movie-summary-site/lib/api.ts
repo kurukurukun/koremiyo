@@ -21,8 +21,10 @@ export const api = {
     return this.fetchTMDB('/movie/now_playing', { page, region: 'JP' });
   },
 
-  async searchMovies(query: string, page = 1) {
-    return this.fetchTMDB('/search/movie', { query, page });
+  async searchMovies(query: string, page = 1, year?: number) {
+    const params: Record<string, string | number> = { query, page };
+    if (year) params.primary_release_year = year;
+    return this.fetchTMDB('/search/movie', params);
   },
 
   async getMovieDetails(id: string | number) {

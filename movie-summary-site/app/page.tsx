@@ -14,14 +14,25 @@ function MovieCard({ movie, idx }: { movie: any, idx: number }) {
 
   useEffect(() => {
     let isMounted = true;
-    if (!movie.poster_path && movie.year) {
-      api.searchMovies(movie.title).then(data => {
+    if (!movie.poster_path && movie.title) {
+      api.searchMovies(movie.title, 1, movie.year).then(data => {
         if (isMounted && data && data.results && data.results.length > 0) {
           const fetchedMovie = data.results[0];
           if (fetchedMovie.poster_path) {
             setPosterUrl(api.getImageUrl(fetchedMovie.poster_path, 'w500'));
           }
           setMovieData({ ...movie, id: fetchedMovie.id });
+        } else if (isMounted) {
+          // Fallback: search without year if year match fails
+          api.searchMovies(movie.title).then(fallbackData => {
+            if (isMounted && fallbackData && fallbackData.results && fallbackData.results.length > 0) {
+              const fetchedMovie = fallbackData.results[0];
+              if (fetchedMovie.poster_path) {
+                setPosterUrl(api.getImageUrl(fetchedMovie.poster_path, 'w500'));
+              }
+              setMovieData({ ...movie, id: fetchedMovie.id });
+            }
+          });
         }
       });
     }
@@ -34,7 +45,7 @@ function MovieCard({ movie, idx }: { movie: any, idx: number }) {
   return (
     <Link href={href} style={{ textDecoration: 'none' }} prefetch={true}>
       <div className="movie-card">
-        <Image src={posterUrl} alt={movieData.title} width={250} height={375} className="movie-poster" unoptimized />
+        <Image src={posterUrl || 'https://via.placeholder.com/250x375?text=No+Image'} alt={movieData.title} width={250} height={375} className="movie-poster" unoptimized />
         <div className="movie-info">
           <h3 className="movie-title">{movieData.year ? `${movieData.year}年受賞: ` : ''}{movieData.title}</h3>
           {(movieData.eigaScore && movieData.filmarksScore) ? (
