@@ -28,9 +28,7 @@ export default function ArticlesPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {articles.map((article) => (
             <Link key={article.id} href={`/articles/${article.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <article style={{ background: 'var(--card-bg)', borderRadius: '12px', padding: '1.5rem', transition: 'transform 0.2s', border: '1px solid rgba(255,255,255,0.05)' }} 
-                onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+              <article className="article-card">
                 <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
                   <i className="fa-regular fa-calendar"></i> {article.date}
                 </div>
