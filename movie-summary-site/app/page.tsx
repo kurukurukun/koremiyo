@@ -7,6 +7,7 @@ import { goldenGlobeWinners, goldenGlobeComedyWinners } from '@/lib/data/golden_
 import { trendingMovies } from '@/lib/data/trending';
 import Link from 'next/link';
 import MovieCard from '@/components/MovieCard';
+import Logo from '@/components/Logo';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'trending' | 'academy' | 'goldenglobe' | 'goldenglobe-comedy'>('trending');
@@ -107,14 +108,8 @@ export default function Home() {
   return (
     <>
       <header className="scrolled">
-        <div className="logo" style={{ cursor: 'pointer', display: 'flex', alignItems: 'baseline', gap: '0.5rem' }} onClick={() => handleTabChange('trending')}>
-          <span className="fa-stack" style={{ fontSize: '0.65em', marginRight: '-0.1rem', transform: 'translateY(-2px)' }}>
-            <i className="fa-solid fa-ticket fa-stack-2x" style={{ color: 'var(--primary-color)', transform: 'rotate(-15deg)' }}></i>
-            <i className="fa-solid fa-check fa-stack-1x" style={{ color: 'var(--bg-color)', transform: 'rotate(-15deg) scale(1.3)', fontWeight: 900 }}></i>
-          </span>
-          <span style={{ color: 'var(--text-primary)' }}>KOREMIYO</span>
-          <small style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>コレミヨ</small>
-          <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 400, letterSpacing: '0.5px', marginLeft: '0.3rem' }}>〜今日の映画選びを絶対に外さない〜</span>
+        <div className="logo" style={{ cursor: 'pointer' }} onClick={() => handleTabChange('trending')}>
+          <Logo />
         </div>
         <div className="search-wrapper">
           <form className="search-container" onSubmit={handleSearch}>

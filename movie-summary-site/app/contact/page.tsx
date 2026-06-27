@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Logo from '@/components/Logo';
 import { Metadata } from 'next';
 
 export default function ContactPage() {
@@ -45,15 +46,9 @@ export default function ContactPage() {
   return (
     <>
       <header className="scrolled">
-        <Link href="/" style={{ textDecoration: 'none' }}>
-          <div className="logo" style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-            <span className="fa-stack" style={{ fontSize: '0.65em', marginRight: '-0.1rem', transform: 'translateY(-2px)' }}>
-              <i className="fa-solid fa-ticket fa-stack-2x" style={{ color: 'var(--primary-color)', transform: 'rotate(-15deg)' }}></i>
-              <i className="fa-solid fa-check fa-stack-1x" style={{ color: 'var(--bg-color)', transform: 'rotate(-15deg) scale(1.3)', fontWeight: 900 }}></i>
-            </span>
-            <span style={{ color: 'var(--text-primary)' }}>KOREMIYO</span>
-          </div>
-        </Link>
+        <div className="logo" style={{ cursor: 'pointer' }}>
+          <Logo />
+        </div>
       </header>
       
       <main style={{ paddingTop: '100px', minHeight: '100vh', paddingBottom: '4rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

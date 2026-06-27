@@ -704,7 +704,7 @@ header.scrolled {
 
 /* Responsive */
 @media (max-width: 768px) {
-    header { padding: 1rem; flex-wrap: wrap; gap: 1rem; }
+    header { padding: 0.6rem 1rem; flex-wrap: wrap; gap: 1rem; }
     .search-wrapper { width: 100%; order: 3; }
     .hero { padding: 2rem 1rem; min-height: 400px; }
     .hero-content h1 { font-size: 2.2rem; }
