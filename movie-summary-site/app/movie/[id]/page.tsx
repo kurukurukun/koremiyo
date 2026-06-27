@@ -3,6 +3,7 @@ import { fetchTMDBServer } from '@/lib/tmdb-server';
 import { api } from '@/lib/api';
 import Link from 'next/link';
 import MovieDetails from '@/components/MovieDetails';
+import Modal from '@/components/Modal';
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   try {
@@ -63,30 +64,9 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
-      <header className="scrolled">
-        <Link href="/" style={{ textDecoration: 'none' }}>
-          <div className="logo" style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-            <span style={{ color: 'var(--text-primary)' }}>KOREMIYO</span>
-          </div>
-        </Link>
-      </header>
-      
-      <main style={{ paddingTop: '80px', minHeight: '100vh', paddingBottom: '4rem' }}>
-        <MovieDetails movie={movie} jpProviders={jpProviders} isModal={false} />
-        
-        <div style={{ maxWidth: '1000px', margin: '2rem auto 0', textAlign: 'center' }}>
-          <Link href="/" className="primary-btn">一覧に戻る</Link>
-        </div>
-      </main>
-      
-      <footer className="site-footer">
-        <div className="footer-content">
-          <Link href="/contact" className="footer-link">
-            <i className="fa-solid fa-envelope"></i> お問い合わせ
-          </Link>
-          <p className="copyright">&copy; 2024 KOREMIYO. All rights reserved.</p>
-        </div>
-      </footer>
+      <Modal isFallback={true}>
+        <MovieDetails movie={movie} jpProviders={jpProviders} isModal={true} />
+      </Modal>
     </>
   );
 }

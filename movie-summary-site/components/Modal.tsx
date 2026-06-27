@@ -2,11 +2,15 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-export default function Modal({ children }: { children: React.ReactNode }) {
+export default function Modal({ children, isFallback = false }: { children: React.ReactNode, isFallback?: boolean }) {
   const router = useRouter();
 
   const onDismiss = () => {
-    router.back();
+    if (isFallback) {
+      router.push('/');
+    } else {
+      router.back();
+    }
   };
 
   useEffect(() => {
@@ -17,7 +21,7 @@ export default function Modal({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <div className="modal-backdrop" onClick={onDismiss}>
+    <div className="modal-backdrop" onClick={onDismiss} style={isFallback ? { background: 'var(--bg-color)' } : {}}>
       <div className="modal-content movie-modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={onDismiss}><i className="fa-solid fa-times"></i></button>
         {children}
