@@ -13,12 +13,20 @@ export default function MovieDetails({ movie, jpProviders, isModal = false, isAm
   const rating = movie.vote_average ? movie.vote_average.toFixed(1) : '-';
   const releaseYear = movie.release_date ? movie.release_date.split('-')[0] : '不明';
 
-  let providersHtml = null;
-  if (jpProviders && jpProviders.length > 0) {
-    providersHtml = jpProviders.map((p: any) => ({
-      name: p.provider_name,
-      logo: api.getImageUrl(p.logo_path, 'original')
-    }));
+  let nonAmazonProviders = null;
+  let amazonLogoUrl = null;
+  
+  if (jpProviders) {
+    const amazonProv = jpProviders.find((p: any) => p.provider_name.includes('Amazon'));
+    if (amazonProv) {
+      amazonLogoUrl = api.getImageUrl(amazonProv.logo_path, 'original');
+    }
+    nonAmazonProviders = jpProviders
+      .filter((p: any) => !p.provider_name.includes('Amazon'))
+      .map((p: any) => ({
+        name: p.provider_name,
+        logo: api.getImageUrl(p.logo_path, 'original')
+      }));
   }
 
   const [eigaScore, setEigaScore] = useState<string>('?.?');
@@ -87,30 +95,45 @@ export default function MovieDetails({ movie, jpProviders, isModal = false, isAm
           
           <p className="modal-overview" style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'var(--text-secondary)' }}>{movie.overview || 'あらすじがありません。'}</p>
           
-          {providersHtml && (
+          {(nonAmazonProviders?.length > 0 || isAmazonAvailable) && (
             <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
               <h3><i className="fa-solid fa-play"></i> 現在配信中のサービス</h3>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-                {providersHtml.map((p: any) => (
+                
+                {nonAmazonProviders?.map((p: any) => (
                   <div key={p.name} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '8px' }}>
                     <img src={p.logo} alt={p.name} style={{ width: '30px', height: '30px', borderRadius: '4px' }} />
                     <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{p.name}</span>
                   </div>
                 ))}
+
+                {isAmazonAvailable && (
+                  <a 
+                    href={`https://www.amazon.co.jp/s?k=${encodeURIComponent(movie.title + ' 映画')}&i=instant-video&tag=${process.env.NEXT_PUBLIC_AMAZON_TAG || 'koremiyo-22'}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="provider-affiliate-link"
+                    style={{ 
+                      display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                      background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', 
+                      borderRadius: '8px', textDecoration: 'none', color: 'inherit',
+                      transition: 'background 0.2s ease'
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+                    onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                  >
+                    {amazonLogoUrl ? (
+                      <img src={amazonLogoUrl} alt="Amazon Prime Video" style={{ width: '30px', height: '30px', borderRadius: '4px' }} />
+                    ) : (
+                      <div style={{ width: '30px', height: '30px', background: '#00A8E1', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <i className="fa-brands fa-amazon" style={{ color: 'white', fontSize: '18px' }}></i>
+                      </div>
+                    )}
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Amazon Prime Video <i className="fa-solid fa-external-link-alt" style={{ fontSize: '0.7rem', opacity: 0.5, marginLeft: '2px' }}></i></span>
+                  </a>
+                )}
+
               </div>
-            </div>
-          )}
-          
-          {isAmazonAvailable && (
-            <div style={{ marginTop: '1.5rem' }}>
-              <a 
-                href={`https://www.amazon.co.jp/s?k=${encodeURIComponent(movie.title + ' 映画')}&i=instant-video&tag=${process.env.NEXT_PUBLIC_AMAZON_TAG || 'koremiyo-22'}`} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="amazon-btn"
-              >
-                <i className="fa-brands fa-amazon"></i> Amazon Prime Videoで観る
-              </a>
             </div>
           )}
           
