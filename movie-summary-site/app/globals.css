@@ -603,6 +603,9 @@ header.scrolled {
         grid-template-columns: repeat(3, 1fr);
         gap: 0.5rem;
     }
+    .movie-poster {
+        aspect-ratio: 3/4; /* スマホ時は少し縦を短くする */
+    }
     .movie-info {
         padding: 0.5rem;
         opacity: 1;
