@@ -22,8 +22,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="ja">
@@ -40,6 +42,7 @@ export default function RootLayout({
           歴代アカデミー賞から厳選！絶対外さないおすすめ名作映画まとめ - KOREMIYO
         </h1>
         {children}
+        {modal}
       </body>
     </html>
   );
