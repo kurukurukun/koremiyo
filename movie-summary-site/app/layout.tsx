@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -38,9 +40,10 @@ export default function RootLayout({
       </head>
       <body>
         {/* SEO用の隠しh1タグ */}
-        <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', border: 0 }}>
-          歴代アカデミー賞から厳選！絶対外さないおすすめ名作映画まとめ - KOREMIYO
-        </h1>
+        <h1 style={{ display: 'none' }}>映画おすすめサイト コレミヨ(KOREMIYO) - 絶対に外さない映画選び</h1>
+        <Suspense fallback={null}>
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
+        </Suspense>
         {children}
         {modal}
       </body>
