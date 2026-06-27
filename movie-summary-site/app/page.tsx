@@ -6,65 +6,7 @@ import { academyWinners } from '@/lib/data/academy';
 import { goldenGlobeWinners, goldenGlobeComedyWinners } from '@/lib/data/golden_globe';
 import { trendingMovies } from '@/lib/data/trending';
 import Link from 'next/link';
-import Image from 'next/image';
-
-function MovieCard({ movie, idx }: { movie: any, idx: number }) {
-  const [posterUrl, setPosterUrl] = useState(movie.poster_path ? api.getImageUrl(movie.poster_path, 'w500') : 'https://via.placeholder.com/500x750/1a1d24/e50914?text=' + encodeURIComponent(movie.title));
-  const [movieData, setMovieData] = useState(movie);
-
-  useEffect(() => {
-    let isMounted = true;
-    if (!movie.poster_path && movie.title) {
-      const query = movie.searchQuery || movie.title;
-      api.searchMovies(query, 1, movie.year).then(data => {
-        if (isMounted && data && data.results && data.results.length > 0) {
-          const fetchedMovie = data.results[0];
-          if (fetchedMovie.poster_path) {
-            setPosterUrl(api.getImageUrl(fetchedMovie.poster_path, 'w500'));
-          }
-          setMovieData({ ...movie, id: fetchedMovie.id });
-        } else if (isMounted) {
-          // Fallback: search without year if year match fails
-          api.searchMovies(query).then(fallbackData => {
-            if (isMounted && fallbackData && fallbackData.results && fallbackData.results.length > 0) {
-              const fetchedMovie = fallbackData.results[0];
-              if (fetchedMovie.poster_path) {
-                setPosterUrl(api.getImageUrl(fetchedMovie.poster_path, 'w500'));
-              }
-              setMovieData({ ...movie, id: fetchedMovie.id });
-            }
-          });
-        }
-      });
-    }
-    return () => { isMounted = false; };
-  }, [movie]);
-
-  const rating = movieData.vote_average ? movieData.vote_average.toFixed(1) : '-';
-  const href = movieData.id ? `/movie/${movieData.id}` : '#';
-
-  return (
-    <Link href={href} style={{ textDecoration: 'none' }} prefetch={true}>
-      <div className="movie-card">
-        <Image src={posterUrl || 'https://via.placeholder.com/250x375?text=No+Image'} alt={movieData.title} width={250} height={375} className="movie-poster" unoptimized />
-        <div className="movie-info">
-          <h3 className="movie-title">{movieData.year ? `${movieData.year}年受賞: ` : ''}{movieData.title}</h3>
-          {(movieData.eigaScore && movieData.filmarksScore) ? (
-            <div className="movie-rating academy-scores">
-              <div>映画.com: <span className="eiga"><i className="fa-solid fa-star"></i> {movieData.eigaScore}</span></div>
-              <div>Filmarks: <span className="filmarks"><i className="fa-solid fa-star"></i> {movieData.filmarksScore}</span></div>
-            </div>
-          ) : (
-            <div className="movie-rating">
-              <i className="fa-solid fa-star"></i> {rating}
-            </div>
-          )}
-        </div>
-      </div>
-    </Link>
-  );
-}
-
+import MovieCard from '@/components/MovieCard';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'trending' | 'academy' | 'goldenglobe' | 'goldenglobe-comedy'>('trending');
@@ -221,6 +163,9 @@ export default function Home() {
           <button className={`tab-btn ${activeTab === 'academy' ? 'active' : ''}`} onClick={() => handleTabChange('academy')}>歴代アカデミー賞</button>
           <button className={`tab-btn ${activeTab === 'goldenglobe' ? 'active' : ''}`} onClick={() => handleTabChange('goldenglobe')}>ゴールデングローブ賞（ドラマ）</button>
           <button className={`tab-btn ${activeTab === 'goldenglobe-comedy' ? 'active' : ''}`} onClick={() => handleTabChange('goldenglobe-comedy')}>ゴールデングローブ賞（コメディ・ミュージカル）</button>
+          <Link href="/articles" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'linear-gradient(135deg, #e50914 0%, #ff4b4b 100%)', padding: '0.8rem 1.5rem', borderRadius: '30px', color: 'white', textDecoration: 'none', fontWeight: 'bold', marginLeft: 'auto', flexShrink: 0 }}>
+            <i className="fa-solid fa-book-open"></i> まとめ記事一覧
+          </Link>
         </div>
 
         <section className="movies-section">
