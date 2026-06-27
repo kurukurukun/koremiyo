@@ -163,7 +163,7 @@ export default function Home() {
           <button className={`tab-btn ${activeTab === 'academy' ? 'active' : ''}`} onClick={() => handleTabChange('academy')}>歴代アカデミー賞</button>
           <button className={`tab-btn ${activeTab === 'goldenglobe' ? 'active' : ''}`} onClick={() => handleTabChange('goldenglobe')}>ゴールデングローブ賞（ドラマ）</button>
           <button className={`tab-btn ${activeTab === 'goldenglobe-comedy' ? 'active' : ''}`} onClick={() => handleTabChange('goldenglobe-comedy')}>ゴールデングローブ賞（コメディ・ミュージカル）</button>
-          <Link href="/articles" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'linear-gradient(135deg, #e50914 0%, #ff4b4b 100%)', padding: '0.8rem 1.5rem', borderRadius: '30px', color: 'white', textDecoration: 'none', fontWeight: 'bold', marginLeft: 'auto', flexShrink: 0 }}>
+          <Link href="/articles" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'linear-gradient(135deg, var(--accent-color) 0%, #00b4cc 100%)', padding: '0.8rem 1.5rem', borderRadius: '30px', color: 'var(--bg-color)', textDecoration: 'none', fontWeight: 'bold', marginLeft: 'auto', flexShrink: 0, boxShadow: '0 4px 15px rgba(0, 229, 255, 0.3)' }}>
             <i className="fa-solid fa-book-open"></i> まとめ記事一覧
           </Link>
         </div>
