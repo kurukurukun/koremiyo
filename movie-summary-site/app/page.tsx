@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { academyWinners } from '@/lib/data/academy';
-import { goldenGlobeWinners } from '@/lib/data/golden_globe';
+import { goldenGlobeWinners, goldenGlobeComedyWinners } from '@/lib/data/golden_globe';
 import { trendingMovies } from '@/lib/data/trending';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -67,7 +67,7 @@ function MovieCard({ movie, idx }: { movie: any, idx: number }) {
 
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<'trending' | 'academy' | 'goldenglobe'>('trending');
+  const [activeTab, setActiveTab] = useState<'trending' | 'academy' | 'goldenglobe' | 'goldenglobe-comedy'>('trending');
   const [movies, setMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -156,6 +156,9 @@ export default function Home() {
     } else if (tab === 'goldenglobe') {
       setSectionTitle('ゴールデングローブ賞 映画部門 作品賞（ドラマ部門）');
       setMovies(goldenGlobeWinners);
+    } else if (tab === 'goldenglobe-comedy') {
+      setSectionTitle('ゴールデングローブ賞 映画部門 作品賞（ミュージカル・コメディ部門）');
+      setMovies(goldenGlobeComedyWinners);
     }
   };
 
@@ -213,10 +216,11 @@ export default function Home() {
           </section>
         )}
 
-        <div className="tabs-container">
+        <div className="tab-container" style={{ display: 'flex', gap: '1rem', overflowX: 'auto', padding: '1rem', marginBottom: '1rem', whiteSpace: 'nowrap' }}>
           <button className={`tab-btn ${activeTab === 'trending' ? 'active' : ''}`} onClick={() => handleTabChange('trending')}>公開中の話題作</button>
           <button className={`tab-btn ${activeTab === 'academy' ? 'active' : ''}`} onClick={() => handleTabChange('academy')}>歴代アカデミー賞</button>
           <button className={`tab-btn ${activeTab === 'goldenglobe' ? 'active' : ''}`} onClick={() => handleTabChange('goldenglobe')}>ゴールデングローブ賞（ドラマ）</button>
+          <button className={`tab-btn ${activeTab === 'goldenglobe-comedy' ? 'active' : ''}`} onClick={() => handleTabChange('goldenglobe-comedy')}>ゴールデングローブ賞（コメディ・ミュージカル）</button>
         </div>
 
         <section className="movies-section">

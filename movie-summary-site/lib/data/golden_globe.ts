@@ -21,4 +21,29 @@ export const goldenGlobeWinners = [
     { "year": 2007, "title": "バベル", "eigaScore": "3.3", "filmarksScore": "3.8" },
     { "year": 2006, "title": "ブロークバック・マウンテン", "eigaScore": "3.9", "filmarksScore": "3.8" },
     { "year": 2005, "title": "アビエイター", "eigaScore": "3.5", "filmarksScore": "3.4" },
+    { "year": 2004, "title": "ロード・オブ・ザ・リング/王の帰還", "eigaScore": "4.1", "filmarksScore": "4.3" },
+    { "year": 2003, "title": "めぐりあう時間たち", "eigaScore": "3.5", "filmarksScore": "3.4" }
+];
+
+export const goldenGlobeComedyWinners = [
+    { "year": 2025, "title": "ANORA アノーラ", "searchQuery": "Anora", "eigaScore": "3.7", "filmarksScore": "3.8" },
+    { "year": 2024, "title": "哀れなるものたち", "searchQuery": "Poor Things", "eigaScore": "3.8", "filmarksScore": "4.0" },
+    { "year": 2023, "title": "イニシェリン島の精霊", "eigaScore": "3.4", "filmarksScore": "3.6" },
+    { "year": 2022, "title": "ウエスト・サイド・ストーリー", "eigaScore": "3.6", "filmarksScore": "3.7" },
+    { "year": 2021, "title": "続・ボラット 栄光ナル国家だったカザフスタンのためのアメリカ貢ぎ物計画", "searchQuery": "Borat Subsequent Moviefilm", "eigaScore": "3.0", "filmarksScore": "3.2" },
+    { "year": 2020, "title": "ワンス・アポン・ア・タイム・イン・ハリウッド", "eigaScore": "3.5", "filmarksScore": "3.8" },
+    { "year": 2019, "title": "グリーンブック", "eigaScore": "4.3", "filmarksScore": "4.2" },
+    { "year": 2018, "title": "レディ・バード", "eigaScore": "3.5", "filmarksScore": "3.7" },
+    { "year": 2017, "title": "ラ・ラ・ランド", "eigaScore": "3.8", "filmarksScore": "4.0" },
+    { "year": 2016, "title": "オデッセイ", "searchQuery": "The Martian", "eigaScore": "4.0", "filmarksScore": "3.9" },
+    { "year": 2015, "title": "グランド・ブダペスト・ホテル", "eigaScore": "3.9", "filmarksScore": "4.0" },
+    { "year": 2014, "title": "アメリカン・ハッスル", "eigaScore": "3.3", "filmarksScore": "3.3" },
+    { "year": 2013, "title": "レ・ミゼラブル", "eigaScore": "4.1", "filmarksScore": "4.2" },
+    { "year": 2012, "title": "アーティスト", "eigaScore": "3.8", "filmarksScore": "1.6" },
+    { "year": 2011, "title": "キッズ・オール・ライト", "eigaScore": "3.4", "filmarksScore": "3.5" },
+    { "year": 2010, "title": "ハングオーバー! 消えた花ムコと史上最悪の二日酔い", "searchQuery": "The Hangover", "eigaScore": "3.8", "filmarksScore": "3.8" },
+    { "year": 2009, "title": "それでも恋するバルセロナ", "eigaScore": "3.3", "filmarksScore": "3.4" },
+    { "year": 2008, "title": "スウィーニー・トッド フリート街の悪魔の理髪師", "searchQuery": "Sweeney Todd: The Demon Barber of Fleet Street", "eigaScore": "3.3", "filmarksScore": "3.3" },
+    { "year": 2007, "title": "ドリームガールズ", "eigaScore": "3.8", "filmarksScore": "3.9" },
+    { "year": 2006, "title": "ウォーク・ザ・ライン/君につづく道", "eigaScore": "3.8", "filmarksScore": "3.8" }
 ];
