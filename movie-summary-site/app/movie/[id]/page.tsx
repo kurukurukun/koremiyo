@@ -1,11 +1,12 @@
 import { Metadata } from 'next';
 import { api } from '@/lib/api';
+import { fetchTMDBServer } from '@/lib/tmdb-server';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   try {
-    const movie = await api.getMovieDetails(params.id);
+    const movie = await fetchTMDBServer(`movie/${params.id}`, { append_to_response: 'credits,videos' });
     const posterUrl = api.getImageUrl(movie.poster_path, 'w500');
     
     return {
@@ -32,8 +33,8 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
   let movie;
   let providersHtml = null;
   try {
-    movie = await api.getMovieDetails(params.id);
-    const providersData = await api.getMovieProviders(params.id);
+    movie = await fetchTMDBServer(`movie/${params.id}`, { append_to_response: 'credits,videos' });
+    const providersData = await fetchTMDBServer(`movie/${params.id}/watch/providers`);
     const jpProviders = providersData.results?.JP?.flatrate;
     
     if (jpProviders && jpProviders.length > 0) {
