@@ -15,7 +15,8 @@ function MovieCard({ movie, idx }: { movie: any, idx: number }) {
   useEffect(() => {
     let isMounted = true;
     if (!movie.poster_path && movie.title) {
-      api.searchMovies(movie.title, 1, movie.year).then(data => {
+      const query = movie.searchQuery || movie.title;
+      api.searchMovies(query, 1, movie.year).then(data => {
         if (isMounted && data && data.results && data.results.length > 0) {
           const fetchedMovie = data.results[0];
           if (fetchedMovie.poster_path) {
@@ -24,7 +25,7 @@ function MovieCard({ movie, idx }: { movie: any, idx: number }) {
           setMovieData({ ...movie, id: fetchedMovie.id });
         } else if (isMounted) {
           // Fallback: search without year if year match fails
-          api.searchMovies(movie.title).then(fallbackData => {
+          api.searchMovies(query).then(fallbackData => {
             if (isMounted && fallbackData && fallbackData.results && fallbackData.results.length > 0) {
               const fetchedMovie = fallbackData.results[0];
               if (fetchedMovie.poster_path) {
