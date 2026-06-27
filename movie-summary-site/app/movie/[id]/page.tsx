@@ -76,6 +76,15 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
       <Modal isFallback={true}>
         <MovieDetails movie={movie} jpProviders={jpProviders} isModal={true} isAmazonAvailable={isAmazonAvailable} />
       </Modal>
+      <footer className="site-footer">
+        <div className="footer-content">
+          <Link href="/contact" className="footer-link">
+            <i className="fa-solid fa-envelope"></i> お問い合わせ
+          </Link>
+          <p className="copyright" style={{ marginTop: '0.5rem', marginBottom: '0.2rem' }}>&copy; {new Date().getFullYear()} KOREMIYO. All rights reserved.</p>
+          <p className="copyright" style={{ fontSize: '0.7rem', opacity: 0.5 }}>Amazonのアソシエイトとして、KOREMIYOは適格販売により収入を得ています。</p>
+        </div>
+      </footer>
     </>
   );
 }

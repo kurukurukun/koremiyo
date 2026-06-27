@@ -111,9 +111,6 @@ export default function MovieDetails({ movie, jpProviders, isModal = false, isAm
               >
                 <i className="fa-brands fa-amazon"></i> Amazon Prime Videoで観る
               </a>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.5rem', opacity: 0.8 }}>
-                ※Amazonアソシエイトリンクを使用しています
-              </div>
             </div>
           )}
           

@@ -227,7 +227,8 @@ export default function Home() {
           <Link href="/contact" className="footer-link">
             <i className="fa-solid fa-envelope"></i> お問い合わせ
           </Link>
-          <p className="copyright">&copy; 2024 KOREMIYO. All rights reserved.</p>
+          <p className="copyright" style={{ marginTop: '0.5rem', marginBottom: '0.2rem' }}>&copy; {new Date().getFullYear()} KOREMIYO. All rights reserved.</p>
+          <p className="copyright" style={{ fontSize: '0.7rem', opacity: 0.5 }}>Amazonのアソシエイトとして、KOREMIYOは適格販売により収入を得ています。</p>
         </div>
       </footer>
     </>
