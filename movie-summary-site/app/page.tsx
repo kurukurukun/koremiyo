@@ -59,12 +59,31 @@ export default function Home() {
   const [movies, setMovies] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
   const [heroMovie, setHeroMovie] = useState<any>(null);
   const [sectionTitle, setSectionTitle] = useState('公開中の話題作');
 
   useEffect(() => {
     loadTrending();
+    const saved = localStorage.getItem('koremiyo_search_history');
+    if (saved) {
+      try {
+        setSearchHistory(JSON.parse(saved));
+      } catch (e) {}
+    }
   }, []);
+
+  const saveHistory = (query: string) => {
+    const updated = [query, ...searchHistory.filter(q => q !== query)].slice(0, 5);
+    setSearchHistory(updated);
+    localStorage.setItem('koremiyo_search_history', JSON.stringify(updated));
+  };
+
+  const clearHistory = () => {
+    setSearchHistory([]);
+    localStorage.removeItem('koremiyo_search_history');
+  };
 
   const loadTrending = async () => {
     setLoading(true);
@@ -92,20 +111,26 @@ export default function Home() {
     }
   };
 
-  const handleSearch = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!searchQuery.trim()) return;
+  const executeSearch = async (query: string) => {
+    if (!query.trim()) return;
     setLoading(true);
+    setShowHistory(false);
+    saveHistory(query);
     try {
-      const data = await api.searchMovies(searchQuery);
+      const data = await api.searchMovies(query);
       setMovies(data.results || []);
-      setSectionTitle(`「${searchQuery}」の検索結果`);
+      setSectionTitle(`「${query}」の検索結果`);
       setActiveTab('trending'); // Reset tab state
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSearch = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    executeSearch(searchQuery);
   };
 
   const handleTabChange = (tab: typeof activeTab) => {
@@ -134,10 +159,33 @@ export default function Home() {
           <small style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>コレミヨ</small>
           <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 400, letterSpacing: '0.5px', marginLeft: '0.3rem' }}>〜今日の映画選びを絶対に外さない〜</span>
         </div>
-        <form className="search-container" onSubmit={handleSearch}>
-          <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="映画タイトルで検索..." />
-          <button type="submit"><i className="fa-solid fa-search"></i></button>
-        </form>
+        <div className="search-wrapper">
+          <form className="search-container" onSubmit={handleSearch}>
+            <input 
+              type="text" 
+              value={searchQuery} 
+              onChange={(e) => setSearchQuery(e.target.value)} 
+              onFocus={() => setShowHistory(true)}
+              onBlur={() => setTimeout(() => setShowHistory(false), 200)}
+              placeholder="映画タイトルで検索..." 
+            />
+            <button type="submit"><i className="fa-solid fa-search"></i></button>
+          </form>
+          {showHistory && searchHistory.length > 0 && (
+            <div className="search-history-dropdown">
+              <div className="search-history-header">
+                <span>最近の検索</span>
+                <button type="button" className="clear-history-btn" onClick={clearHistory}>履歴をクリア</button>
+              </div>
+              {searchHistory.map((query, idx) => (
+                <div key={idx} className="search-history-item" onClick={() => { setSearchQuery(query); executeSearch(query); }}>
+                  <i className="fa-solid fa-clock-rotate-left"></i>
+                  <span>{query}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </header>
 
       <main>

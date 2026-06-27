@@ -76,6 +76,11 @@ header.scrolled {
     color: var(--text-primary);
 }
 
+.search-wrapper {
+    position: relative;
+    width: 400px;
+}
+
 .search-container {
     display: flex;
     align-items: center;
@@ -83,8 +88,64 @@ header.scrolled {
     border: 1px solid var(--border-color);
     border-radius: 30px;
     padding: 0.5rem 1.5rem;
-    width: 400px;
+    width: 100%;
     transition: all 0.3s ease;
+}
+
+.search-history-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-top: 0.5rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.search-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.clear-history-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.clear-history-btn:hover {
+    text-decoration: underline;
+}
+
+.search-history-item {
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: background 0.2s;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.search-history-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.search-history-item i {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
 .search-container:focus-within {
@@ -594,7 +655,7 @@ header.scrolled {
 /* Responsive */
 @media (max-width: 768px) {
     header { padding: 1rem; flex-wrap: wrap; gap: 1rem; }
-    .search-container { width: 100%; order: 3; }
+    .search-wrapper { width: 100%; order: 3; }
     .hero { padding: 2rem 1rem; min-height: 400px; }
     .hero-content h1 { font-size: 2.2rem; }
     
