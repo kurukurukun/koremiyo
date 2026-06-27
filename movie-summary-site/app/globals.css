@@ -614,7 +614,7 @@ header.scrolled {
     }
     .movie-poster {
         height: auto !important;
-        aspect-ratio: 4/5; /* さらに縦を短く */
+        aspect-ratio: 3/4; /* 4:5より少し縦長にする */
         object-fit: cover;
     }
     .movie-info {
