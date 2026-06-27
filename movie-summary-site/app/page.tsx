@@ -32,7 +32,7 @@ function MovieCard({ movie, idx }: { movie: any, idx: number }) {
   const href = movieData.id ? `/movie/${movieData.id}` : '#';
 
   return (
-    <Link href={href} style={{ textDecoration: 'none' }}>
+    <Link href={href} style={{ textDecoration: 'none' }} prefetch={true}>
       <div className="movie-card">
         <Image src={posterUrl} alt={movieData.title} width={250} height={375} className="movie-poster" unoptimized />
         <div className="movie-info">
