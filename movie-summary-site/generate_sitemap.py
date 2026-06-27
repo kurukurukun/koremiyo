@@ -23,13 +23,6 @@ def extract_ids_from_js(filepath, var_name):
 def main():
     print("Generating sitemap.xml...")
     
-    academy_ids = extract_ids_from_js('js/academy_data.js', 'academyWinners')
-    gg_ids = extract_ids_from_js('js/golden_globe_data.js', 'goldenGlobeWinners')
-    
-    # Combine and deduplicate
-    all_ids = list(set(academy_ids + gg_ids))
-    print(f"Found {len(all_ids)} unique movies.")
-    
     base_url = "https://www.koremiyo.com"
     today = datetime.now().strftime("%Y-%m-%d")
     
@@ -40,25 +33,16 @@ def main():
     xml_content += '  <url>\n'
     xml_content += f'    <loc>{base_url}/</loc>\n'
     xml_content += f'    <lastmod>{today}</lastmod>\n'
-    xml_content += '    <changefreq>weekly</changefreq>\n'
+    xml_content += '    <changefreq>daily</changefreq>\n'
     xml_content += '    <priority>1.0</priority>\n'
     xml_content += '  </url>\n'
     
-    # Movie URLs
-    for movie_id in all_ids:
-        xml_content += '  <url>\n'
-        xml_content += f'    <loc>{base_url}/?movie={movie_id}</loc>\n'
-        xml_content += f'    <lastmod>{today}</lastmod>\n'
-        xml_content += '    <changefreq>monthly</changefreq>\n'
-        xml_content += '    <priority>0.8</priority>\n'
-        xml_content += '  </url>\n'
-        
     xml_content += '</urlset>\n'
     
     with open('sitemap.xml', 'w', encoding='utf-8') as f:
         f.write(xml_content)
         
-    print("sitemap.xml generated successfully!")
+    print("sitemap.xml generated successfully (Top page only)!")
 
 if __name__ == "__main__":
     main()
