@@ -223,6 +223,36 @@ class UIManager {
         document.title = `${movie.title} - コレミヨ(KOREMIYO) | おすすめ名作映画`;
         const ogTitle = document.querySelector('meta[property="og:title"]');
         if (ogTitle) ogTitle.setAttribute('content', `${movie.title} - コレミヨ(KOREMIYO)`);
+
+        // JSON-LD 構造化データの追加（Googleの検索結果リッチスニペット対応）
+        let schemaScript = document.getElementById('movie-schema');
+        if (!schemaScript) {
+            schemaScript = document.createElement('script');
+            schemaScript.id = 'movie-schema';
+            schemaScript.type = 'application/ld+json';
+            document.head.appendChild(schemaScript);
+        }
+        
+        const schemaData = {
+            "@context": "https://schema.org",
+            "@type": "Movie",
+            "name": movie.title,
+            "image": posterUrl,
+            "dateCreated": movie.release_date || "",
+            "description": movie.overview || 'コレミヨがおすすめする名作映画です。'
+        };
+        
+        // TMDBの評価データがあれば構造化データに追加
+        if (movie.vote_average && movie.vote_count) {
+            schemaData.aggregateRating = {
+                "@type": "AggregateRating",
+                "ratingValue": movie.vote_average.toFixed(1),
+                "bestRating": "10",
+                "ratingCount": movie.vote_count
+            };
+        }
+        
+        schemaScript.textContent = JSON.stringify(schemaData);
     }
 
     showModal(modalId) {
