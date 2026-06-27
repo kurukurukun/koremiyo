@@ -37,7 +37,9 @@ class MovieAPI {
     }
 
     async getTrendingMovies(page = 1) {
-        return this._fetch('/trending/movie/week', { page });
+        // 「日本で現在公開中の映画 (Now Playing in JP)」を取得
+        // デフォルトで人気順（popularity.desc）に近い形で返ってきます
+        return this._fetch('/movie/now_playing', { page, region: 'JP' });
     }
 
     async searchMovies(query, page = 1) {

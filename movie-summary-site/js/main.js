@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const tab = btn.dataset.tab;
             if (tab === 'trending') {
-                ui.renderMovieGrid(currentTrendingMovies, "トレンド映画");
+                ui.renderMovieGrid(currentTrendingMovies, "公開中の話題作");
             } else if (tab === 'academy') {
                 if (typeof academyWinners !== 'undefined') {
                     ui.renderAcademyGrid(academyWinners, "歴代アカデミー賞 作品賞");
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (trendingBtn) trendingBtn.classList.add('active');
             
             // Render trending
-            ui.renderMovieGrid(currentTrendingMovies, "トレンド映画");
+            ui.renderMovieGrid(currentTrendingMovies, "公開中の話題作");
             
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
