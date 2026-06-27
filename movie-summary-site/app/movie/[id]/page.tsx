@@ -63,11 +63,14 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
-      <header className="scrolled">
+      <header className="scrolled" style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Link href="/" style={{ textDecoration: 'none' }}>
           <div className="logo" style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
             <span style={{ color: 'var(--text-primary)' }}>KOREMIYO</span>
           </div>
+        </Link>
+        <Link href="/contact" style={{ color: 'var(--text-secondary)', fontSize: '1.2rem' }} title="お問い合わせ">
+          <i className="fa-solid fa-envelope"></i>
         </Link>
       </header>
       

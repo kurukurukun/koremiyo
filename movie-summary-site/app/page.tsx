@@ -186,6 +186,9 @@ export default function Home() {
             </div>
           )}
         </div>
+        <Link href="/contact" style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', marginLeft: '1rem' }} title="お問い合わせ">
+          <i className="fa-solid fa-envelope"></i>
+        </Link>
       </header>
 
       <main>
