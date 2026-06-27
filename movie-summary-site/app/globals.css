@@ -613,7 +613,9 @@ header.scrolled {
         gap: 0.5rem;
     }
     .movie-poster {
-        aspect-ratio: 3/4; /* スマホ時は少し縦を短くする */
+        height: auto !important;
+        aspect-ratio: 4/5; /* さらに縦を短く */
+        object-fit: cover;
     }
     .movie-info {
         padding: 0.5rem;
