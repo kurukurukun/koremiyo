@@ -7,6 +7,52 @@ import { goldenGlobeWinners } from '@/lib/data/golden_globe';
 import Link from 'next/link';
 import Image from 'next/image';
 
+function MovieCard({ movie, idx }: { movie: any, idx: number }) {
+  const [posterUrl, setPosterUrl] = useState(movie.poster_path ? api.getImageUrl(movie.poster_path, 'w500') : 'https://via.placeholder.com/500x750/1a1d24/e50914?text=' + encodeURIComponent(movie.title));
+  const [movieData, setMovieData] = useState(movie);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (!movie.poster_path && movie.year) {
+      api.searchMovies(movie.title).then(data => {
+        if (isMounted && data && data.results && data.results.length > 0) {
+          const fetchedMovie = data.results[0];
+          if (fetchedMovie.poster_path) {
+            setPosterUrl(api.getImageUrl(fetchedMovie.poster_path, 'w500'));
+          }
+          setMovieData({ ...movie, id: fetchedMovie.id });
+        }
+      });
+    }
+    return () => { isMounted = false; };
+  }, [movie]);
+
+  const rating = movieData.vote_average ? movieData.vote_average.toFixed(1) : '-';
+  const href = movieData.id ? `/movie/${movieData.id}` : '#';
+
+  return (
+    <Link href={href} style={{ textDecoration: 'none' }}>
+      <div className="movie-card">
+        <Image src={posterUrl} alt={movieData.title} width={250} height={375} className="movie-poster" unoptimized />
+        <div className="movie-info">
+          <h3 className="movie-title">{movieData.year ? `${movieData.year}年受賞: ` : ''}{movieData.title}</h3>
+          {movieData.year ? (
+            <div className="movie-rating academy-scores">
+              <div>映画.com: <span className="eiga"><i className="fa-solid fa-star"></i> {movieData.eigaScore}</span></div>
+              <div>Filmarks: <span className="filmarks"><i className="fa-solid fa-star"></i> {movieData.filmarksScore}</span></div>
+            </div>
+          ) : (
+            <div className="movie-rating">
+              <i className="fa-solid fa-star"></i> {rating}
+            </div>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'trending' | 'academy' | 'goldenglobe'>('trending');
   const [movies, setMovies] = useState<any[]>([]);
@@ -77,6 +123,7 @@ export default function Home() {
           </span>
           <span style={{ color: 'var(--text-primary)' }}>KOREMIYO</span>
           <small style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', letterSpacing: '0.5px' }}>コレミヨ</small>
+          <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 400, letterSpacing: '0.5px', marginLeft: '0.3rem' }}>〜今日の映画選びを絶対に外さない〜</span>
         </div>
         <form className="search-container" onSubmit={handleSearch}>
           <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="映画タイトルで検索..." />
@@ -110,33 +157,9 @@ export default function Home() {
             <div className="loader"><div className="spinner"></div></div>
           ) : (
             <div className="movies-grid">
-              {movies.map((movie, idx) => {
-                const posterUrl = movie.poster_path ? api.getImageUrl(movie.poster_path, 'w500') : 'https://via.placeholder.com/500x750/1a1d24/e50914?text=' + encodeURIComponent(movie.title);
-                const rating = movie.vote_average ? movie.vote_average.toFixed(1) : '-';
-                // For static lists, we use the title to search. Next.js approach: we pass title in URL if no ID.
-                const href = movie.id ? `/movie/${movie.id}` : `/search?q=${encodeURIComponent(movie.title)}`;
-
-                return (
-                  <Link href={href} key={movie.id || idx} style={{ textDecoration: 'none' }}>
-                    <div className="movie-card">
-                      <Image src={posterUrl} alt={movie.title} width={250} height={375} className="movie-poster" unoptimized />
-                      <div className="movie-info">
-                        <h3 className="movie-title">{movie.year ? `${movie.year}年受賞: ` : ''}{movie.title}</h3>
-                        {movie.year ? (
-                          <div className="movie-rating academy-scores">
-                            <div>映画.com: <span className="eiga"><i className="fa-solid fa-star"></i> {movie.eigaScore}</span></div>
-                            <div>Filmarks: <span className="filmarks"><i className="fa-solid fa-star"></i> {movie.filmarksScore}</span></div>
-                          </div>
-                        ) : (
-                          <div className="movie-rating">
-                            <i className="fa-solid fa-star"></i> {rating}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
+              {movies.map((movie, idx) => (
+                <MovieCard key={movie.id || idx} movie={movie} idx={idx} />
+              ))}
             </div>
           )}
         </section>
