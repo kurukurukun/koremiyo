@@ -588,7 +588,40 @@ header.scrolled {
     .search-container { width: 100%; order: 3; }
     .hero { padding: 2rem 1rem; min-height: 400px; }
     .hero-content h1 { font-size: 2.2rem; }
+    
+    .tabs-container { 
+        padding: 1rem 1rem 0; 
+        gap: 0.5rem; 
+        overflow-x: auto; 
+        justify-content: flex-start; 
+        -webkit-overflow-scrolling: touch;
+    }
+    .tab-btn { padding: 0.6rem 1rem; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+    
     .movies-section { padding: 1rem; }
+    .movies-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+    }
+    .movie-info {
+        padding: 0.5rem;
+        opacity: 1;
+        transform: translateY(0);
+        background: linear-gradient(to top, rgba(15, 17, 21, 1) 0%, rgba(15, 17, 21, 0.8) 50%, rgba(15, 17, 21, 0) 100%);
+    }
+    .movie-title {
+        font-size: 0.75rem;
+        margin-bottom: 0.1rem;
+    }
+    .movie-rating {
+        font-size: 0.7rem;
+        margin-bottom: 0.1rem;
+    }
+    .movie-rating.academy-scores {
+        font-size: 0.65rem;
+        gap: 0.1rem;
+    }
+
     .modal-details { grid-template-columns: 1fr; margin-top: -50px; padding: 1.5rem; }
     .modal-poster { width: 150px; margin: 0 auto; }
     .modal-info h2 { text-align: center; font-size: 1.8rem; }
