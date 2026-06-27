@@ -10,17 +10,22 @@ import MovieCard from '@/components/MovieCard';
 import Logo from '@/components/Logo';
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<'trending' | 'academy' | 'goldenglobe' | 'goldenglobe-comedy'>('trending');
-  const [movies, setMovies] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'trending' | 'academy' | 'goldenglobe' | 'goldenglobe-comedy'>('academy');
+  const [movies, setMovies] = useState<any[]>(academyWinners);
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [heroMovie, setHeroMovie] = useState<any>(null);
-  const [sectionTitle, setSectionTitle] = useState('公開中の話題作');
+  const [sectionTitle, setSectionTitle] = useState('歴代アカデミー賞 作品賞');
 
   useEffect(() => {
-    loadTrending();
+    // Set a random academy winner as the hero movie initially
+    if (!heroMovie && academyWinners.length > 0) {
+      const randomHero = academyWinners[Math.floor(Math.random() * Math.min(20, academyWinners.length))];
+      setHeroMovie(randomHero);
+    }
+
     const saved = localStorage.getItem('koremiyo_search_history');
     if (saved) {
       try {
@@ -108,7 +113,7 @@ export default function Home() {
   return (
     <>
       <header className="scrolled">
-        <div className="logo" style={{ cursor: 'pointer' }} onClick={() => handleTabChange('trending')}>
+        <div className="logo" style={{ cursor: 'pointer' }} onClick={() => handleTabChange('academy')}>
           <Logo />
         </div>
         <div className="search-wrapper">
@@ -154,7 +159,7 @@ export default function Home() {
         )}
 
         <div className="tab-container" style={{ display: 'flex', gap: '1rem', overflowX: 'auto', padding: '1rem', marginBottom: '1rem', whiteSpace: 'nowrap' }}>
-          <button className={`tab-btn ${activeTab === 'trending' ? 'active' : ''}`} onClick={() => handleTabChange('trending')}>公開中の話題作</button>
+          {/* <button className={`tab-btn ${activeTab === 'trending' ? 'active' : ''}`} onClick={() => handleTabChange('trending')}>公開中の話題作</button> */}
           <button className={`tab-btn ${activeTab === 'academy' ? 'active' : ''}`} onClick={() => handleTabChange('academy')}>歴代アカデミー賞</button>
           <button className={`tab-btn ${activeTab === 'goldenglobe' ? 'active' : ''}`} onClick={() => handleTabChange('goldenglobe')}>ゴールデングローブ賞（ドラマ）</button>
           <button className={`tab-btn ${activeTab === 'goldenglobe-comedy' ? 'active' : ''}`} onClick={() => handleTabChange('goldenglobe-comedy')}>ゴールデングローブ賞（コメディ・ミュージカル）</button>
