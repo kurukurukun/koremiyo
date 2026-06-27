@@ -186,9 +186,6 @@ export default function Home() {
             </div>
           )}
         </div>
-        <Link href="/contact" style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', marginLeft: '1rem' }} title="お問い合わせ">
-          <i className="fa-solid fa-envelope"></i>
-        </Link>
       </header>
 
       <main>
@@ -224,6 +221,15 @@ export default function Home() {
           )}
         </section>
       </main>
+
+      <footer className="site-footer">
+        <div className="footer-content">
+          <Link href="/contact" className="footer-link">
+            <i className="fa-solid fa-envelope"></i> お問い合わせ
+          </Link>
+          <p className="copyright">&copy; 2024 KOREMIYO. All rights reserved.</p>
+        </div>
+      </footer>
     </>
   );
 }

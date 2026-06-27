@@ -63,14 +63,11 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
-      <header className="scrolled" style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <header className="scrolled">
         <Link href="/" style={{ textDecoration: 'none' }}>
           <div className="logo" style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
             <span style={{ color: 'var(--text-primary)' }}>KOREMIYO</span>
           </div>
-        </Link>
-        <Link href="/contact" style={{ color: 'var(--text-secondary)', fontSize: '1.2rem' }} title="お問い合わせ">
-          <i className="fa-solid fa-envelope"></i>
         </Link>
       </header>
       
@@ -81,6 +78,15 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
           <Link href="/" className="primary-btn">一覧に戻る</Link>
         </div>
       </main>
+      
+      <footer className="site-footer">
+        <div className="footer-content">
+          <Link href="/contact" className="footer-link">
+            <i className="fa-solid fa-envelope"></i> お問い合わせ
+          </Link>
+          <p className="copyright">&copy; 2024 KOREMIYO. All rights reserved.</p>
+        </div>
+      </footer>
     </>
   );
 }
