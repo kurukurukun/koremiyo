@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { academyWinners } from '@/lib/data/academy';
 import { goldenGlobeWinners } from '@/lib/data/golden_globe';
+import { trendingMovies } from '@/lib/data/trending';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -36,7 +37,7 @@ function MovieCard({ movie, idx }: { movie: any, idx: number }) {
         <Image src={posterUrl} alt={movieData.title} width={250} height={375} className="movie-poster" unoptimized />
         <div className="movie-info">
           <h3 className="movie-title">{movieData.year ? `${movieData.year}年受賞: ` : ''}{movieData.title}</h3>
-          {movieData.year ? (
+          {(movieData.eigaScore && movieData.filmarksScore) ? (
             <div className="movie-rating academy-scores">
               <div>映画.com: <span className="eiga"><i className="fa-solid fa-star"></i> {movieData.eigaScore}</span></div>
               <div>Filmarks: <span className="filmarks"><i className="fa-solid fa-star"></i> {movieData.filmarksScore}</span></div>
@@ -68,12 +69,20 @@ export default function Home() {
   const loadTrending = async () => {
     setLoading(true);
     try {
-      const data = await api.getTrendingMovies();
-      if (data && data.results) {
-        setMovies(data.results);
+      if (trendingMovies && trendingMovies.length > 0) {
+        setMovies(trendingMovies);
         if (!heroMovie) {
-          const randomHero = data.results[Math.floor(Math.random() * Math.min(10, data.results.length))];
+          const randomHero = trendingMovies[Math.floor(Math.random() * Math.min(10, trendingMovies.length))];
           setHeroMovie(randomHero);
+        }
+      } else {
+        const data = await api.getTrendingMovies();
+        if (data && data.results) {
+          setMovies(data.results);
+          if (!heroMovie) {
+            const randomHero = data.results[Math.floor(Math.random() * Math.min(10, data.results.length))];
+            setHeroMovie(randomHero);
+          }
         }
       }
     } catch (e) {

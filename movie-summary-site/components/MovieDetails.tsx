@@ -1,7 +1,11 @@
+'use client';
+
 import { api } from '@/lib/api';
 import { academyWinners } from '@/lib/data/academy';
 import { goldenGlobeWinners } from '@/lib/data/golden_globe';
+import { trendingMovies } from '@/lib/data/trending';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 
 export default function MovieDetails({ movie, jpProviders, isModal = false }: { movie: any, jpProviders: any, isModal?: boolean }) {
   const posterUrl = api.getImageUrl(movie.poster_path, 'w500');
@@ -17,19 +21,43 @@ export default function MovieDetails({ movie, jpProviders, isModal = false }: { 
     }));
   }
 
-  // 映画.com と Filmarks のスコアを静的データから検索
-  let eigaScore = '?.?';
-  let filmarksScore = '?.?';
-  
-  let matched = academyWinners.find(m => m.title === movie.title || m.title === movie.original_title);
-  if (!matched) {
-    matched = goldenGlobeWinners.find(m => m.title === movie.title || m.title === movie.original_title);
-  }
-  
-  if (matched) {
-    eigaScore = matched.eigaScore || eigaScore;
-    filmarksScore = matched.filmarksScore || filmarksScore;
-  }
+  const [eigaScore, setEigaScore] = useState<string>('?.?');
+  const [filmarksScore, setFilmarksScore] = useState<string>('?.?');
+  const [loadingRatings, setLoadingRatings] = useState(true);
+
+  useEffect(() => {
+    // 1. 静的データ（賞やキャッシュされた話題作）から検索
+    let matched = academyWinners.find(m => m.title === movie.title || m.title === movie.original_title);
+    if (!matched) {
+      matched = goldenGlobeWinners.find(m => m.title === movie.title || m.title === movie.original_title);
+    }
+    if (!matched) {
+      matched = trendingMovies.find(m => m.title === movie.title || m.title === movie.original_title);
+    }
+    
+    if (matched && matched.eigaScore && matched.filmarksScore) {
+      setEigaScore(matched.eigaScore);
+      setFilmarksScore(matched.filmarksScore);
+      setLoadingRatings(false);
+    } else {
+      // 2. 見つからなければオンデマンドでAPI叩いてスクレイピング
+      setLoadingRatings(true);
+      fetch(`/api/scrape-ratings?title=${encodeURIComponent(movie.title)}`)
+        .then(res => res.json())
+        .then(data => {
+          setEigaScore(data.eigaScore || '-.-');
+          setFilmarksScore(data.filmarksScore || '-.-');
+        })
+        .catch(err => {
+          console.error(err);
+          setEigaScore('-.-');
+          setFilmarksScore('-.-');
+        })
+        .finally(() => {
+          setLoadingRatings(false);
+        });
+    }
+  }, [movie.title, movie.original_title]);
 
   const encodedTitle = encodeURIComponent(movie.title);
   const eigaSearchUrl = `https://eiga.com/search/${encodedTitle}/`;
@@ -80,12 +108,18 @@ export default function MovieDetails({ movie, jpProviders, isModal = false }: { 
               </div>
               <div className="rating-block eiga" style={{ background: 'var(--bg-color)', padding: '1rem', borderRadius: '12px', textAlign: 'center', border: '1px solid var(--border-color)' }}>
                   <span className="brand" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>映画.com</span>
-                  <div className="score" style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}><i className="fa-solid fa-star" style={{ color: 'var(--eiga-color)'}}></i> {eigaScore}</div>
+                  <div className="score" style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
+                    <i className="fa-solid fa-star" style={{ color: 'var(--eiga-color)'}}></i> 
+                    {loadingRatings ? <span style={{ fontSize: '1rem', opacity: 0.5 }}>取得中...</span> : eigaScore}
+                  </div>
                   <a href={eigaSearchUrl} target="_blank" className="rating-btn" style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-primary)', background: 'rgba(255,255,255,0.1)', padding: '0.4rem 1rem', borderRadius: '20px', textDecoration: 'none' }}>レビューを検索</a>
               </div>
               <div className="rating-block filmarks" style={{ background: 'var(--bg-color)', padding: '1rem', borderRadius: '12px', textAlign: 'center', border: '1px solid var(--border-color)' }}>
                   <span className="brand" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>Filmarks</span>
-                  <div className="score" style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}><i className="fa-solid fa-star" style={{ color: 'var(--filmarks-color)'}}></i> {filmarksScore}</div>
+                  <div className="score" style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
+                    <i className="fa-solid fa-star" style={{ color: 'var(--filmarks-color)'}}></i> 
+                    {loadingRatings ? <span style={{ fontSize: '1rem', opacity: 0.5 }}>取得中...</span> : filmarksScore}
+                  </div>
                   <a href={filmarksSearchUrl} target="_blank" className="rating-btn" style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-primary)', background: 'rgba(255,255,255,0.1)', padding: '0.4rem 1rem', borderRadius: '20px', textDecoration: 'none' }}>レビューを検索</a>
               </div>
           </div>
