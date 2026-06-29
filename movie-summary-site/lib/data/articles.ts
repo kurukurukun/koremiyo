@@ -108,7 +108,7 @@ export function getArticles(): Article[] {
   }
   
   const allArticles = fileNames
-    .filter(fileName => fileName.endsWith('.md'))
+    .filter(fileName => fileName.endsWith('.md') && !fileName.startsWith('.'))
     .map(fileName => {
       const id = fileName.replace(/\.md$/, '');
       const fullPath = path.join(articlesDirectory, fileName);
