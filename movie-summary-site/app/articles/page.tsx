@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { articles } from '@/lib/data/articles';
+import { getArticles } from '@/lib/data/articles';
 import Logo from '@/components/Logo';
 
 export const metadata = {
@@ -8,6 +8,8 @@ export const metadata = {
 };
 
 export default function ArticlesPage() {
+  const articles = getArticles();
+
   return (
     <>
       <header className="scrolled">

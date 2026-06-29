@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 export interface Article {
   id: string;
   title: string;
@@ -7,38 +10,136 @@ export interface Article {
   movieQueries: { title: string; year?: number; searchQuery?: string }[];
 }
 
-export const articles: Article[] = [
-  {
-    id: 'mind-blowing-endings',
-    title: '【ネタバレ厳禁】ラストのどんでん返しが凄い映画5選',
-    date: '2026-06-27',
-    description: '見終わった後に「やられた！」と叫びたくなる、衝撃のラストを迎える名作映画を厳選してご紹介します。',
-    contentHtml: `
-      <p>映画の醍醐味といえば、なんといっても予想を裏切られるストーリー展開ですよね。</p>
-      <p>今回は、世界中の映画ファンを驚かせた「どんでん返し」が素晴らしい映画をピックアップしました。未見の方は絶対にネタバレを見ずに鑑賞することをおすすめします！</p>
-    `,
-    movieQueries: [
-      { title: "シックス・センス", year: 1999 },
-      { title: "ユージュアル・サスペクツ", year: 1995 },
-      { title: "セブン", year: 1995, searchQuery: "Se7en" },
-      { title: "ファイト・クラブ", year: 1999 },
-      { title: "シャッター アイランド", year: 2010 }
-    ]
-  },
-  {
-    id: 'must-watch-korean-movies',
-    title: '圧倒的熱量！絶対に観るべき韓国映画の傑作まとめ',
-    date: '2026-06-26',
-    description: '世界を席巻する韓国映画。サスペンスからヒューマンドラマまで、その圧倒的なクオリティと熱量を感じられる必見の傑作を紹介します。',
-    contentHtml: `
-      <p>近年、アカデミー賞を受賞するなど世界的な評価を高め続けている韓国映画。</p>
-      <p>その魅力は、容赦ない描写と骨太なストーリーテリング、そして俳優陣の圧倒的な演技力にあります。ここでは、韓国映画初心者にも、映画通にもおすすめしたい傑作をまとめました。</p>
-    `,
-    movieQueries: [
-      { title: "パラサイト 半地下の家族", year: 2019 },
-      { title: "オールド・ボーイ", year: 2003, searchQuery: "Oldboy" },
-      { title: "殺人の追憶", year: 2003 },
-      { title: "新感染 ファイナル・エクスプレス", year: 2016, searchQuery: "Train to Busan" }
-    ]
+const articlesDirectory = path.join(process.cwd(), 'content', 'articles');
+
+// Lightweight custom YAML frontmatter parser to avoid external dependencies
+function parseSimpleYamlFrontmatter(fileContents: string) {
+  const matterRegex = /^---\n([\s\S]+?)\n---\n([\s\S]*)$/;
+  const match = fileContents.match(matterRegex);
+  
+  if (!match) return { data: {}, content: fileContents };
+  
+  const frontmatterStr = match[1];
+  const content = match[2];
+  
+  const data: any = {};
+  const lines = frontmatterStr.split('\n');
+  
+  let currentKey = '';
+  let inArray = false;
+  let currentArray: any[] = [];
+  let currentObject: any = {};
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.trim() === '') continue;
+    
+    // Array item start
+    if (line.startsWith('  - ')) {
+      if (inArray && Object.keys(currentObject).length > 0) {
+        currentArray.push({...currentObject});
+      }
+      inArray = true;
+      currentObject = {};
+      
+      const kvMatch = line.match(/^  - (\w+):\s*(.+)$/);
+      if (kvMatch) {
+        let val: any = kvMatch[2].replace(/^["']|["']$/g, '');
+        if (!isNaN(Number(val))) val = Number(val);
+        currentObject[kvMatch[1]] = val;
+      }
+    } 
+    // Array item property
+    else if (line.startsWith('    ') && inArray) {
+      const kvMatch = line.match(/^    (\w+):\s*(.+)$/);
+      if (kvMatch) {
+        let val: any = kvMatch[2].replace(/^["']|["']$/g, '');
+        if (!isNaN(Number(val))) val = Number(val);
+        currentObject[kvMatch[1]] = val;
+      }
+    } 
+    // Root level property
+    else {
+      if (inArray) {
+        if (Object.keys(currentObject).length > 0) {
+          currentArray.push({...currentObject});
+        }
+        data[currentKey] = currentArray;
+        inArray = false;
+        currentArray = [];
+        currentObject = {};
+      }
+      
+      const rootMatch = line.match(/^(\w+):\s*(.+)?$/);
+      if (rootMatch) {
+        currentKey = rootMatch[1];
+        if (rootMatch[2]) {
+          data[currentKey] = rootMatch[2].replace(/^["']|["']$/g, '');
+        } else {
+          data[currentKey] = [];
+        }
+      }
+    }
   }
-];
+  
+  if (inArray && Object.keys(currentObject).length > 0) {
+    currentArray.push({...currentObject});
+    data[currentKey] = currentArray;
+  }
+  
+  return { data, content };
+}
+
+// Simple Markdown to HTML converter (Paragraphs)
+function simpleMarkdownToHtml(markdown: string) {
+  return markdown
+    .trim()
+    .split('\n\n')
+    .map(para => `<p>${para.replace(/\n/g, '<br/>')}</p>`)
+    .join('\n');
+}
+
+export function getArticles(): Article[] {
+  let fileNames;
+  try {
+    fileNames = fs.readdirSync(articlesDirectory);
+  } catch (e) {
+    return []; // Directory might not exist yet
+  }
+  
+  const allArticles = fileNames
+    .filter(fileName => fileName.endsWith('.md'))
+    .map(fileName => {
+      const id = fileName.replace(/\.md$/, '');
+      const fullPath = path.join(articlesDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, 'utf8');
+      
+      const matterResult = parseSimpleYamlFrontmatter(fileContents);
+      
+      return {
+        id,
+        title: matterResult.data.title || '',
+        date: matterResult.data.date || '',
+        description: matterResult.data.description || '',
+        movieQueries: matterResult.data.movieQueries || [],
+        contentHtml: simpleMarkdownToHtml(matterResult.content),
+      };
+    });
+    
+  // Sort articles by date
+  return allArticles.sort((a, b) => {
+    if (a.date < b.date) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+}
+
+export function getArticleById(id: string): Article | undefined {
+  const articles = getArticles();
+  return articles.find(article => article.id === id);
+}
+
+// Provide backward compatibility for existing imports
+export const articles = getArticles();

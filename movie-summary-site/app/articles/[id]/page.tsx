@@ -1,11 +1,11 @@
-import { articles } from '@/lib/data/articles';
+import { getArticleById, getArticles } from '@/lib/data/articles';
 import Link from 'next/link';
 import MovieCard from '@/components/MovieCard';
 import Logo from '@/components/Logo';
 import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const article = articles.find(a => a.id === params.id);
+  const article = getArticleById(params.id);
   if (!article) return { title: '記事が見つかりません' };
   
   return {
@@ -14,8 +14,14 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   };
 }
 
+export function generateStaticParams() {
+  return getArticles().map((article) => ({
+    id: article.id,
+  }));
+}
+
 export default function ArticlePage({ params }: { params: { id: string } }) {
-  const article = articles.find(a => a.id === params.id);
+  const article = getArticleById(params.id);
   
   if (!article) {
     notFound();

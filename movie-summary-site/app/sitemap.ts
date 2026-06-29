@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
-import { articles } from '@/lib/data/articles';
+import { getArticles } from '@/lib/data/articles';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.koremiyo.com'; // Update with actual domain if necessary
+  const articles = getArticles();
 
   // Static routes
   const staticRoutes = [
