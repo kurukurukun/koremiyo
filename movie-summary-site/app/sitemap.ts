@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { articles } from '@/lib/data/articles';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://koremiyo.vercel.app'; // Update with actual domain if necessary
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.koremiyo.com'; // Update with actual domain if necessary
 
   // Static routes
   const staticRoutes = [
