@@ -20,10 +20,28 @@ export default function Home() {
   const [sectionTitle, setSectionTitle] = useState('歴代アカデミー賞 作品賞');
 
   useEffect(() => {
+    let isMounted = true;
+    
     // Set a random academy winner as the hero movie initially
     if (!heroMovie && academyWinners.length > 0) {
       const randomHero = academyWinners[Math.floor(Math.random() * Math.min(20, academyWinners.length))];
-      setHeroMovie(randomHero);
+      const query = randomHero.searchQuery || randomHero.title;
+      
+      api.searchMovies(query, 1, randomHero.year).then(data => {
+        if (isMounted && data && data.results && data.results.length > 0) {
+          setHeroMovie({ ...randomHero, ...data.results[0] });
+        } else if (isMounted) {
+          api.searchMovies(query).then(fallbackData => {
+            if (isMounted && fallbackData && fallbackData.results && fallbackData.results.length > 0) {
+              setHeroMovie({ ...randomHero, ...fallbackData.results[0] });
+            } else if (isMounted) {
+              setHeroMovie(randomHero);
+            }
+          });
+        }
+      }).catch(() => {
+        if (isMounted) setHeroMovie(randomHero);
+      });
     }
 
     const saved = localStorage.getItem('koremiyo_search_history');
@@ -32,6 +50,10 @@ export default function Home() {
         setSearchHistory(JSON.parse(saved));
       } catch (e) {}
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const saveHistory = (query: string) => {
