@@ -36,6 +36,12 @@ export default function ArticlesPage() {
             </Link>
           ))}
         </div>
+
+        <div style={{ marginTop: '4rem', textAlign: 'center' }}>
+          <Link href="/" style={{ display: 'inline-block', padding: '0.8rem 1.5rem', background: 'rgba(255,255,255,0.1)', borderRadius: '30px', textDecoration: 'none', color: 'var(--text-primary)', transition: 'background 0.2s' }}>
+            <i className="fa-solid fa-arrow-left"></i> トップページに戻る
+          </Link>
+        </div>
       </main>
 
       <footer className="site-footer">
