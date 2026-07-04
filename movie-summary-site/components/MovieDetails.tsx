@@ -32,6 +32,19 @@ export default function MovieDetails({ movie, jpProviders, isModal = false, isAm
   const [eigaScore, setEigaScore] = useState<string>('?.?');
   const [filmarksScore, setFilmarksScore] = useState<string>('?.?');
   const [loadingRatings, setLoadingRatings] = useState(true);
+  const [showTrailer, setShowTrailer] = useState(false);
+
+  let trailerKey = null;
+  if (movie.videos && movie.videos.results && movie.videos.results.length > 0) {
+    const videos = movie.videos.results.filter((v: any) => v.site === 'YouTube');
+    const jaTrailer = videos.find((v: any) => v.iso_639_1 === 'ja' && v.type === 'Trailer');
+    const officialTrailer = videos.find((v: any) => v.type === 'Trailer');
+    const anyVideo = videos[0];
+    const bestVideo = jaTrailer || officialTrailer || anyVideo;
+    if (bestVideo) {
+      trailerKey = bestVideo.key;
+    }
+  }
 
   useEffect(() => {
     // 1. 静的データ（賞やキャッシュされた話題作）から検索
@@ -94,6 +107,36 @@ export default function MovieDetails({ movie, jpProviders, isModal = false, isAm
           </div>
           
           <p className="modal-overview" style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'var(--text-secondary)' }}>{movie.overview || 'あらすじがありません。'}</p>
+          
+          {trailerKey && (
+            <div style={{ marginTop: '1.5rem', marginBottom: '0.5rem' }}>
+              {!showTrailer ? (
+                <button 
+                  onClick={() => setShowTrailer(true)}
+                  style={{
+                    background: '#e52d27', color: '#fff', border: 'none', padding: '0.8rem 1.5rem', 
+                    borderRadius: '30px', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'background 0.2s ease',
+                    boxShadow: '0 4px 14px rgba(229, 45, 39, 0.4)'
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.background = '#c3221e'}
+                  onMouseOut={(e) => e.currentTarget.style.background = '#e52d27'}
+                >
+                  <i className="fa-brands fa-youtube" style={{ fontSize: '1.2rem' }}></i> 予告編を見る
+                </button>
+              ) : (
+                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', marginTop: '1rem' }}>
+                  <iframe 
+                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`} 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              )}
+            </div>
+          )}
           
           {(nonAmazonProviders?.length > 0 || isAmazonAvailable) && (
             <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
