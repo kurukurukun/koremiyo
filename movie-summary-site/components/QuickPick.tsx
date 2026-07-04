@@ -71,7 +71,7 @@ export default function QuickPick() {
     <div className="quick-pick-container" style={{
       background: 'linear-gradient(145deg, #1a1a24 0%, #101018 100%)',
       borderRadius: '24px',
-      padding: '2rem',
+      padding: '1.5rem 1rem',
       boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
       textAlign: 'center',
       border: '1px solid rgba(255,255,255,0.05)',
@@ -81,7 +81,8 @@ export default function QuickPick() {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      width: '100%'
     }}>
       
       {step === 0 && (
@@ -173,7 +174,7 @@ export default function QuickPick() {
           {loading ? (
             <div className="loader"><div className="spinner"></div><p style={{ marginTop: '1rem', color: 'var(--text-secondary)' }}>最適な映画を探しています...</p></div>
           ) : results.length > 0 ? (
-            <div style={{ width: '100%', maxWidth: '350px', position: 'relative' }}>
+            <div style={{ width: '100%', maxWidth: '320px', position: 'relative' }}>
               <div 
                 style={{ 
                   background: 'var(--bg-color)', borderRadius: '20px', overflow: 'hidden', 
@@ -184,9 +185,9 @@ export default function QuickPick() {
                 }}
               >
                 {results[currentIndex].poster_path ? (
-                  <img src={api.getImageUrl(results[currentIndex].poster_path, 'w500')} alt={results[currentIndex].title} style={{ width: '100%', height: '350px', objectFit: 'cover' }} />
+                  <img src={api.getImageUrl(results[currentIndex].poster_path, 'w500')} alt={results[currentIndex].title} style={{ width: '100%', height: '320px', objectFit: 'cover' }} />
                 ) : (
-                  <div style={{ width: '100%', height: '350px', background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>No Image</div>
+                  <div style={{ width: '100%', height: '320px', background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>No Image</div>
                 )}
                 <div style={{ padding: '1.5rem', textAlign: 'left' }}>
                   <h3 style={{ fontSize: '1.3rem', marginBottom: '0.5rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{results[currentIndex].title}</h3>
