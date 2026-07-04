@@ -108,35 +108,7 @@ export default function MovieDetails({ movie, jpProviders, isModal = false, isAm
           
           <p className="modal-overview" style={{ fontSize: '1.05rem', lineHeight: 1.8, color: 'var(--text-secondary)' }}>{movie.overview || 'あらすじがありません。'}</p>
           
-          {trailerKey && (
-            <div style={{ marginTop: '1.5rem', marginBottom: '0.5rem' }}>
-              {!showTrailer ? (
-                <button 
-                  onClick={() => setShowTrailer(true)}
-                  style={{
-                    background: '#e52d27', color: '#fff', border: 'none', padding: '0.8rem 1.5rem', 
-                    borderRadius: '30px', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'background 0.2s ease',
-                    boxShadow: '0 4px 14px rgba(229, 45, 39, 0.4)'
-                  }}
-                  onMouseOver={(e) => e.currentTarget.style.background = '#c3221e'}
-                  onMouseOut={(e) => e.currentTarget.style.background = '#e52d27'}
-                >
-                  <i className="fa-brands fa-youtube" style={{ fontSize: '1.2rem' }}></i> 予告編を見る
-                </button>
-              ) : (
-                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)', marginTop: '1rem' }}>
-                  <iframe 
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
-                    src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`} 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              )}
-            </div>
-          )}
+
           
           {(nonAmazonProviders?.length > 0 || isAmazonAvailable) && (
             <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
@@ -202,6 +174,39 @@ export default function MovieDetails({ movie, jpProviders, isModal = false, isAm
                   <a href={filmarksSearchUrl} target="_blank" className="rating-btn" style={{ display: 'inline-block', marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-primary)', background: 'rgba(255,255,255,0.1)', padding: '0.4rem 1rem', borderRadius: '20px', textDecoration: 'none' }}>レビューを検索</a>
               </div>
           </div>
+
+          {trailerKey && (
+            <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)' }}>
+              <h3><i className="fa-brands fa-youtube" style={{ color: '#e52d27' }}></i> 予告編</h3>
+              <div style={{ marginTop: '1rem' }}>
+                {!showTrailer ? (
+                  <button 
+                    onClick={() => setShowTrailer(true)}
+                    style={{
+                      background: '#e52d27', color: '#fff', border: 'none', padding: '0.8rem 1.5rem', 
+                      borderRadius: '30px', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'background 0.2s ease',
+                      boxShadow: '0 4px 14px rgba(229, 45, 39, 0.4)'
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.background = '#c3221e'}
+                    onMouseOut={(e) => e.currentTarget.style.background = '#e52d27'}
+                  >
+                    <i className="fa-solid fa-play" style={{ fontSize: '1.2rem' }}></i> 予告動画を再生する
+                  </button>
+                ) : (
+                  <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
+                    <iframe 
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                      src={`https://www.youtube.com/embed/${trailerKey}?autoplay=1`} 
+                      frameBorder="0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
