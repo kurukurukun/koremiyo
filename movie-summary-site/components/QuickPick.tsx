@@ -32,7 +32,10 @@ export default function QuickPick() {
     const enriched = await Promise.all(selected.map(async (movie) => {
       const query = movie.searchQuery || movie.title;
       try {
-        const data = await api.searchMovies(query, 1, movie.year);
+        let data = await api.searchMovies(query, 1, movie.year);
+        if (!data.results || data.results.length === 0) {
+          data = await api.searchMovies(query, 1);
+        }
         if (data.results && data.results.length > 0) {
           return { ...movie, ...data.results[0] };
         }
