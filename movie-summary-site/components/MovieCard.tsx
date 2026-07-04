@@ -11,15 +11,36 @@ export default function MovieCard({ movie, idx }: { movie: any, idx: number }) {
 
   useEffect(() => {
     let isMounted = true;
+
+    const fetchExtraRatings = async (titleToScrape: string) => {
+      try {
+        const res = await fetch(`/api/scrape-ratings?title=${encodeURIComponent(titleToScrape)}`);
+        if (res.ok) {
+          const ratingData = await res.json();
+          if (isMounted) {
+            setMovieData((prev: any) => ({
+              ...prev,
+              eigaScore: ratingData.eigaScore || prev.eigaScore,
+              filmarksScore: ratingData.filmarksScore || prev.filmarksScore
+            }));
+          }
+        }
+      } catch (e) {
+        // Ignore error
+      }
+    };
+
+    const query = movie.searchQuery || movie.title;
+
     if (!movie.poster_path && movie.title) {
-      const query = movie.searchQuery || movie.title;
       api.searchMovies(query, 1, movie.year).then(data => {
         if (isMounted && data && data.results && data.results.length > 0) {
           const fetchedMovie = data.results[0];
           if (fetchedMovie.poster_path) {
             setPosterUrl(api.getImageUrl(fetchedMovie.poster_path, 'w500'));
           }
-          setMovieData({ ...movie, id: fetchedMovie.id });
+          setMovieData({ ...movie, id: fetchedMovie.id, vote_average: fetchedMovie.vote_average });
+          fetchExtraRatings(query);
         } else if (isMounted) {
           // Fallback: search without year if year match fails
           api.searchMovies(query).then(fallbackData => {
@@ -28,11 +49,16 @@ export default function MovieCard({ movie, idx }: { movie: any, idx: number }) {
               if (fetchedMovie.poster_path) {
                 setPosterUrl(api.getImageUrl(fetchedMovie.poster_path, 'w500'));
               }
-              setMovieData({ ...movie, id: fetchedMovie.id });
+              setMovieData({ ...movie, id: fetchedMovie.id, vote_average: fetchedMovie.vote_average });
+              fetchExtraRatings(query);
             }
           });
         }
       });
+    } else if (movie.id) {
+      if (!movie.eigaScore || !movie.filmarksScore) {
+        fetchExtraRatings(query);
+      }
     }
     return () => { isMounted = false; };
   }, [movie]);
