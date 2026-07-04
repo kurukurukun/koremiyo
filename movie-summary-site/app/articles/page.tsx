@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getArticles } from '@/lib/data/articles';
 import Logo from '@/components/Logo';
+import HamburgerMenu from '@/components/HamburgerMenu';
 
 export const metadata = {
   title: '映画特集・まとめ記事 | KOREMIYO',
@@ -16,6 +17,7 @@ export default function ArticlesPage() {
         <div className="logo" style={{ cursor: 'pointer' }}>
           <Logo />
         </div>
+        <HamburgerMenu />
       </header>
       
       <main className="main-content" style={{ maxWidth: '800px', margin: '0 auto', paddingTop: '100px' }}>

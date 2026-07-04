@@ -2,6 +2,7 @@ import { getArticleById, getArticles } from '@/lib/data/articles';
 import Link from 'next/link';
 import MovieCard from '@/components/MovieCard';
 import Logo from '@/components/Logo';
+import HamburgerMenu from '@/components/HamburgerMenu';
 import { notFound } from 'next/navigation';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
@@ -33,6 +34,7 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
         <div className="logo" style={{ cursor: 'pointer' }}>
           <Logo />
         </div>
+        <HamburgerMenu />
       </header>
       
       <main className="main-content" style={{ maxWidth: '800px', margin: '0 auto', paddingTop: '100px' }}>

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import MovieCard from '@/components/MovieCard';
 import Logo from '@/components/Logo';
 import QuickPick from '@/components/QuickPick';
+import HamburgerMenu from '@/components/HamburgerMenu';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<'trending' | 'academy' | 'goldenglobe' | 'goldenglobe-comedy'>('academy');
@@ -166,6 +167,7 @@ export default function Home() {
             </div>
           )}
         </div>
+        <HamburgerMenu />
       </header>
 
       <main>
