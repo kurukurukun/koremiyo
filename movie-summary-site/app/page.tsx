@@ -8,7 +8,6 @@ import { trendingMovies } from '@/lib/data/trending';
 import Link from 'next/link';
 import MovieCard from '@/components/MovieCard';
 import Logo from '@/components/Logo';
-import QuickPick from '@/components/QuickPick';
 import HamburgerMenu from '@/components/HamburgerMenu';
 
 export default function Home() {
@@ -171,10 +170,6 @@ export default function Home() {
       </header>
 
       <main>
-        <section style={{ padding: '6rem 1rem 2rem', maxWidth: '1000px', margin: '0 auto' }}>
-          <QuickPick />
-        </section>
-
         {heroMovie && (
           <section className="hero">
             <div className="hero-content">

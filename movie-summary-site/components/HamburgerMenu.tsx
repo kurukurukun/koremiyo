@@ -35,7 +35,7 @@ export default function HamburgerMenu() {
           </div>
 
           <Link 
-            href="/" 
+            href="/quickpick" 
             onClick={() => setIsOpen(false)} 
             style={{ 
               fontSize: '1.8rem', color: '#fff', textDecoration: 'none', fontWeight: 'bold',
