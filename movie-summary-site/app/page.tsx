@@ -170,10 +170,12 @@ export default function Home() {
       </header>
 
       <main>
+        <h1 className="sr-only">映画おすすめサイト KOREMIYO - 絶対に外さない映画選びと名作レビュー</h1>
+        
         {heroMovie && (
           <section className="hero">
             <div className="hero-content">
-              <h1>{heroMovie.title || heroMovie.original_title}</h1>
+              <h2 className="hero-title">{heroMovie.title || heroMovie.original_title}</h2>
               <p>{heroMovie.overview || 'あらすじがありません。'}</p>
               <Link href={`/movie/${heroMovie.id}`} className="primary-btn">詳細を見る</Link>
             </div>
@@ -181,6 +183,10 @@ export default function Home() {
             <div className="hero-overlay"></div>
           </section>
         )}
+
+        <p className="seo-description">
+          KOREMIYOは、歴代のアカデミー賞作品賞やゴールデングローブ賞など、絶対に外さないおすすめの名作映画だけを厳選して紹介するサイトです。「今夜観る映画が決められない…」というタイパ重視のあなたへ、最高の1本をご提案します。
+        </p>
 
         <div className="tab-container" style={{ display: 'flex', gap: '1rem', overflowX: 'auto', padding: '1rem', marginBottom: '1rem', whiteSpace: 'nowrap' }}>
           {/* <button className={`tab-btn ${activeTab === 'trending' ? 'active' : ''}`} onClick={() => handleTabChange('trending')}>公開中の話題作</button> */}

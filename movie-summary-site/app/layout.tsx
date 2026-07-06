@@ -39,8 +39,7 @@ export default function RootLayout({
         <meta name="google-site-verification" content="JOYD23xCXOri_xkZMkUUVC-TPlte56evxDIOvGuF42I" />
       </head>
       <body>
-        {/* SEO用の隠しh1タグ */}
-        <h1 style={{ display: 'none' }}>映画おすすめサイト コレミヨ(KOREMIYO) - 絶対に外さない映画選び</h1>
+        {/* SEO */}
         <Suspense fallback={null}>
           <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID as string} />
         </Suspense>
