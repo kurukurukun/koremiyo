@@ -13,7 +13,7 @@ export default function HamburgerMenu() {
     e.preventDefault();
     if (searchQuery.trim()) {
       setIsOpen(false);
-      router.push(`/?q=${encodeURIComponent(searchQuery)}`);
+      window.location.href = `/?q=${encodeURIComponent(searchQuery)}`;
       setSearchQuery('');
     }
   };
