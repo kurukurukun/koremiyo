@@ -12,7 +12,7 @@ export default function HamburgerMenu() {
         onClick={() => setIsOpen(!isOpen)} 
         style={{ 
           background: 'none', border: 'none', color: 'var(--text-primary)', 
-          fontSize: '1.8rem', cursor: 'pointer', padding: '0.5rem', 
+          fontSize: '1.5rem', cursor: 'pointer', padding: '0.3rem', 
           zIndex: 1100, position: 'relative', display: 'flex', alignItems: 'center' 
         }}
         aria-label="Menu"

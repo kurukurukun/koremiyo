@@ -139,34 +139,36 @@ export default function Home() {
         <div className="logo" style={{ cursor: 'pointer' }} onClick={() => handleTabChange('academy')}>
           <Logo />
         </div>
-        <div className="search-wrapper">
-          <form className="search-container" onSubmit={handleSearch}>
-            <input 
-              type="text" 
-              value={searchQuery} 
-              onChange={(e) => setSearchQuery(e.target.value)} 
-              onFocus={() => setShowHistory(true)}
-              onBlur={() => setTimeout(() => setShowHistory(false), 200)}
-              placeholder="映画タイトルで検索..." 
-            />
-            <button type="submit"><i className="fa-solid fa-search"></i></button>
-          </form>
-          {showHistory && searchHistory.length > 0 && (
-            <div className="search-history-dropdown">
-              <div className="search-history-header">
-                <span>最近の検索</span>
-                <button type="button" className="clear-history-btn" onClick={clearHistory}>履歴をクリア</button>
-              </div>
-              {searchHistory.map((query, idx) => (
-                <div key={idx} className="search-history-item" onClick={() => { setSearchQuery(query); executeSearch(query); }}>
-                  <i className="fa-solid fa-clock-rotate-left"></i>
-                  <span>{query}</span>
+        <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div className="search-wrapper">
+            <form className="search-container" onSubmit={handleSearch}>
+              <input 
+                type="text" 
+                value={searchQuery} 
+                onChange={(e) => setSearchQuery(e.target.value)} 
+                onFocus={() => setShowHistory(true)}
+                onBlur={() => setTimeout(() => setShowHistory(false), 200)}
+                placeholder="映画タイトルで検索..." 
+              />
+              <button type="submit"><i className="fa-solid fa-search"></i></button>
+            </form>
+            {showHistory && searchHistory.length > 0 && (
+              <div className="search-history-dropdown">
+                <div className="search-history-header">
+                  <span>最近の検索</span>
+                  <button type="button" className="clear-history-btn" onClick={clearHistory}>履歴をクリア</button>
                 </div>
-              ))}
-            </div>
-          )}
+                {searchHistory.map((query, idx) => (
+                  <div key={idx} className="search-history-item" onClick={() => { setSearchQuery(query); executeSearch(query); }}>
+                    <i className="fa-solid fa-clock-rotate-left"></i>
+                    <span>{query}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <HamburgerMenu />
         </div>
-        <HamburgerMenu />
       </header>
 
       <main>

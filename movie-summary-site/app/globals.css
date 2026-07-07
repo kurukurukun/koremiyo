@@ -76,6 +76,13 @@ header.scrolled {
     color: var(--text-primary);
 }
 
+.logo-subtext {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+
 .search-wrapper {
     position: relative;
     width: 400px;
@@ -727,6 +734,10 @@ header.scrolled {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .logo-subtext .slogan {
+        display: none;
+    }
+    
     header { 
         padding: 0.6rem 1rem; 
         display: grid; 
