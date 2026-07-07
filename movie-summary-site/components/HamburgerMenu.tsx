@@ -2,9 +2,21 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function HamburgerMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setIsOpen(false);
+      router.push(`/?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery('');
+    }
+  };
 
   return (
     <div style={{ marginLeft: '1rem' }}>
@@ -33,6 +45,19 @@ export default function HamburgerMenu() {
           <div style={{ position: 'absolute', top: '1.5rem', left: '4rem', fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary-color)' }}>
             KOREMIYO
           </div>
+
+          <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.1)', borderRadius: '30px', padding: '0.5rem 1rem', width: '80%', maxWidth: '300px', marginBottom: '1rem' }}>
+            <input 
+              type="text" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="映画タイトルで検索..."
+              style={{ background: 'transparent', border: 'none', color: '#fff', outline: 'none', width: '100%', fontSize: '1rem' }}
+            />
+            <button type="submit" style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}>
+              <i className="fa-solid fa-search"></i>
+            </button>
+          </form>
 
           <Link 
             href="/quickpick" 

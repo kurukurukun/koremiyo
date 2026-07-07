@@ -734,10 +734,6 @@ header.scrolled {
 
 /* Responsive */
 @media (max-width: 768px) {
-    .logo-subtext .slogan {
-        display: none;
-    }
-    
     header { 
         padding: 0.6rem 1rem; 
         display: grid; 

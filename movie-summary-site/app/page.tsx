@@ -14,9 +14,6 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<'trending' | 'academy' | 'goldenglobe' | 'goldenglobe-comedy'>('academy');
   const [movies, setMovies] = useState<any[]>(academyWinners);
   const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchHistory, setSearchHistory] = useState<string[]>([]);
-  const [showHistory, setShowHistory] = useState(false);
   const [heroMovie, setHeroMovie] = useState<any>(null);
   const [sectionTitle, setSectionTitle] = useState('歴代アカデミー賞 作品賞');
 
@@ -45,11 +42,12 @@ export default function Home() {
       });
     }
 
-    const saved = localStorage.getItem('koremiyo_search_history');
-    if (saved) {
-      try {
-        setSearchHistory(JSON.parse(saved));
-      } catch (e) {}
+    const urlParams = new URLSearchParams(window.location.search);
+    const q = urlParams.get('q');
+    if (q) {
+      // executeSearch will be called after initial mount
+      setTimeout(() => executeSearch(q), 0);
+      window.history.replaceState({}, '', '/');
     }
 
     return () => {
@@ -57,16 +55,7 @@ export default function Home() {
     };
   }, []);
 
-  const saveHistory = (query: string) => {
-    const updated = [query, ...searchHistory.filter(q => q !== query)].slice(0, 5);
-    setSearchHistory(updated);
-    localStorage.setItem('koremiyo_search_history', JSON.stringify(updated));
-  };
 
-  const clearHistory = () => {
-    setSearchHistory([]);
-    localStorage.removeItem('koremiyo_search_history');
-  };
 
   const loadTrending = async () => {
     setLoading(true);
@@ -97,8 +86,6 @@ export default function Home() {
   const executeSearch = async (query: string) => {
     if (!query.trim()) return;
     setLoading(true);
-    setShowHistory(false);
-    saveHistory(query);
     try {
       const data = await api.searchMovies(query);
       setMovies(data.results || []);
@@ -109,11 +96,6 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSearch = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    executeSearch(searchQuery);
   };
 
   const handleTabChange = (tab: typeof activeTab) => {
@@ -139,36 +121,7 @@ export default function Home() {
         <div className="logo" style={{ cursor: 'pointer' }} onClick={() => handleTabChange('academy')}>
           <Logo />
         </div>
-        <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div className="search-wrapper">
-            <form className="search-container" onSubmit={handleSearch}>
-              <input 
-                type="text" 
-                value={searchQuery} 
-                onChange={(e) => setSearchQuery(e.target.value)} 
-                onFocus={() => setShowHistory(true)}
-                onBlur={() => setTimeout(() => setShowHistory(false), 200)}
-                placeholder="映画タイトルで検索..." 
-              />
-              <button type="submit"><i className="fa-solid fa-search"></i></button>
-            </form>
-            {showHistory && searchHistory.length > 0 && (
-              <div className="search-history-dropdown">
-                <div className="search-history-header">
-                  <span>最近の検索</span>
-                  <button type="button" className="clear-history-btn" onClick={clearHistory}>履歴をクリア</button>
-                </div>
-                {searchHistory.map((query, idx) => (
-                  <div key={idx} className="search-history-item" onClick={() => { setSearchQuery(query); executeSearch(query); }}>
-                    <i className="fa-solid fa-clock-rotate-left"></i>
-                    <span>{query}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-          <HamburgerMenu />
-        </div>
+        <HamburgerMenu />
       </header>
 
       <main>
