@@ -4,7 +4,6 @@ import { api } from '@/lib/api';
 import { academyWinners } from '@/lib/data/academy';
 import { goldenGlobeWinners } from '@/lib/data/golden_globe';
 import { trendingMovies } from '@/lib/data/trending';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 export default function MovieDetails({ movie, jpProviders, isModal = false, isAmazonAvailable = false }: { movie: any, jpProviders: any, isModal?: boolean, isAmazonAvailable?: boolean }) {

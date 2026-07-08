@@ -161,7 +161,7 @@ export default function Home() {
           ) : (
             <div className="movies-grid">
               {movies.map((movie, idx) => (
-                <MovieCard key={movie.id || idx} movie={movie} idx={idx} />
+                <MovieCard key={movie.id || movie.title || idx} movie={movie} idx={idx} />
               ))}
             </div>
           )}

@@ -1,6 +1,7 @@
 import QuickPick from '@/components/QuickPick';
 import Logo from '@/components/Logo';
 import HamburgerMenu from '@/components/HamburgerMenu';
+import Link from 'next/link';
 
 export const metadata = {
   title: '今日の映画を探す | KOREMIYO',
@@ -12,7 +13,9 @@ export default function QuickPickPage() {
     <>
       <header className="scrolled">
         <div className="logo" style={{ cursor: 'pointer' }}>
-          <Logo />
+          <Link href="/">
+            <Logo />
+          </Link>
         </div>
         <HamburgerMenu />
       </header>
