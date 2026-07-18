@@ -114,12 +114,41 @@ export default function MovieDetails({ movie, jpProviders, isModal = false, isAm
               <h3><i className="fa-solid fa-play"></i> 現在配信中のサービス</h3>
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '1rem' }}>
                 
-                {nonAmazonProviders?.map((p: any) => (
-                  <div key={p.name} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '8px' }}>
-                    <img src={p.logo} alt={p.name} style={{ width: '30px', height: '30px', borderRadius: '4px' }} />
-                    <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{p.name}</span>
-                  </div>
-                ))}
+                {nonAmazonProviders?.map((p: any) => {
+                  const isHulu = p.name.includes('Hulu');
+                  
+                  if (isHulu) {
+                    return (
+                      <a 
+                        key={p.name}
+                        href="https://t.afi-b.com/visit.php?a=G8792C-8298919W&p=n985490W"
+                        target="_blank"
+                        rel="nofollow noopener noreferrer"
+                        className="provider-affiliate-link"
+                        style={{ 
+                          display: 'flex', alignItems: 'center', gap: '0.5rem', 
+                          background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', 
+                          borderRadius: '8px', textDecoration: 'none', color: 'inherit',
+                          transition: 'background 0.2s ease'
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+                        onMouseOut={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                      >
+                        <img src={p.logo} alt={p.name} style={{ width: '30px', height: '30px', borderRadius: '4px' }} />
+                        <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{p.name} <i className="fa-solid fa-external-link-alt" style={{ fontSize: '0.7rem', opacity: 0.5, marginLeft: '2px' }}></i></span>
+                        {/* アフィリエイト成果計測用の1px画像 */}
+                        <img src="https://t.afi-b.com/lead/G8792C/n985490W/8298919W" width="1" height="1" style={{ border: 'none', display: 'none' }} alt="" />
+                      </a>
+                    );
+                  }
+
+                  return (
+                    <div key={p.name} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255,255,255,0.05)', padding: '0.5rem 1rem', borderRadius: '8px' }}>
+                      <img src={p.logo} alt={p.name} style={{ width: '30px', height: '30px', borderRadius: '4px' }} />
+                      <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>{p.name}</span>
+                    </div>
+                  );
+                })}
 
                 {isAmazonAvailable && (
                   <a 
