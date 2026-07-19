@@ -25,8 +25,9 @@ export default function Home() {
     if (!heroMovie && academyWinners.length > 0) {
       const randomHero = academyWinners[Math.floor(Math.random() * Math.min(20, academyWinners.length))];
       const query = randomHero.searchQuery || randomHero.title;
+      const searchYear = randomHero.releaseYear || randomHero.year;
       
-      api.searchMovies(query, 1, randomHero.year).then(data => {
+      api.searchMovies(query, 1, searchYear).then(data => {
         if (isMounted && data && data.results && data.results.length > 0) {
           setHeroMovie({ ...randomHero, ...data.results[0] });
         } else if (isMounted) {

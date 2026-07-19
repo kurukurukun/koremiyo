@@ -31,9 +31,10 @@ export default function MovieCard({ movie, idx }: { movie: any, idx: number }) {
     };
 
     const query = movie.searchQuery || movie.title;
+    const searchYear = movie.releaseYear || movie.year;
 
     if (!movie.poster_path && movie.title) {
-      api.searchMovies(query, 1, movie.year).then(data => {
+      api.searchMovies(query, 1, searchYear).then(data => {
         if (isMounted && data && data.results && data.results.length > 0) {
           const fetchedMovie = data.results[0];
           if (fetchedMovie.poster_path) {
