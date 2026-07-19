@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { academyWinners } from '@/lib/data/academy';
+import { japanAcademyWinners } from '@/lib/data/japan_academy';
 import { goldenGlobeWinners, goldenGlobeComedyWinners } from '@/lib/data/golden_globe';
 import { trendingMovies } from '@/lib/data/trending';
 import Link from 'next/link';
@@ -11,7 +12,7 @@ import Logo from '@/components/Logo';
 import HamburgerMenu from '@/components/HamburgerMenu';
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<'trending' | 'academy' | 'goldenglobe' | 'goldenglobe-comedy'>('academy');
+  const [activeTab, setActiveTab] = useState<'trending' | 'academy' | 'goldenglobe' | 'goldenglobe-comedy' | 'japan-academy'>('academy');
   const [movies, setMovies] = useState<any[]>(academyWinners);
   const [loading, setLoading] = useState(false);
   const [heroMovie, setHeroMovie] = useState<any>(null);
@@ -112,6 +113,9 @@ export default function Home() {
     } else if (tab === 'goldenglobe-comedy') {
       setSectionTitle('ゴールデングローブ賞 映画部門 作品賞（ミュージカル・コメディ部門）');
       setMovies(goldenGlobeComedyWinners);
+    } else if (tab === 'japan-academy') {
+      setSectionTitle('歴代日本アカデミー賞 最優秀作品賞');
+      setMovies(japanAcademyWinners);
     }
   };
 
@@ -146,6 +150,7 @@ export default function Home() {
         <div className="tab-container" style={{ display: 'flex', gap: '1rem', overflowX: 'auto', padding: '1rem', marginBottom: '1rem', whiteSpace: 'nowrap' }}>
           {/* <button className={`tab-btn ${activeTab === 'trending' ? 'active' : ''}`} onClick={() => handleTabChange('trending')}>公開中の話題作</button> */}
           <button className={`tab-btn ${activeTab === 'academy' ? 'active' : ''}`} onClick={() => handleTabChange('academy')}>歴代アカデミー賞</button>
+          <button className={`tab-btn ${activeTab === 'japan-academy' ? 'active' : ''}`} onClick={() => handleTabChange('japan-academy')}>日本アカデミー賞</button>
           <button className={`tab-btn ${activeTab === 'goldenglobe' ? 'active' : ''}`} onClick={() => handleTabChange('goldenglobe')}>ゴールデングローブ賞（ドラマ）</button>
           <button className={`tab-btn ${activeTab === 'goldenglobe-comedy' ? 'active' : ''}`} onClick={() => handleTabChange('goldenglobe-comedy')}>ゴールデングローブ賞（コメディ・ミュージカル）</button>
           <Link href="/articles" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'linear-gradient(135deg, var(--accent-color) 0%, #00b4cc 100%)', padding: '0.8rem 1.5rem', borderRadius: '30px', color: 'var(--bg-color)', textDecoration: 'none', fontWeight: 'bold', marginLeft: 'auto', flexShrink: 0, boxShadow: '0 4px 15px rgba(0, 229, 255, 0.3)' }}>

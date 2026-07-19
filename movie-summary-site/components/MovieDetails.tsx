@@ -3,6 +3,7 @@
 import { api } from '@/lib/api';
 import { academyWinners } from '@/lib/data/academy';
 import { goldenGlobeWinners } from '@/lib/data/golden_globe';
+import { japanAcademyWinners } from '@/lib/data/japan_academy';
 import { trendingMovies } from '@/lib/data/trending';
 import { useState, useEffect } from 'react';
 
@@ -50,6 +51,9 @@ export default function MovieDetails({ movie, jpProviders, isModal = false, isAm
     let matched = academyWinners.find(m => m.title === movie.title || m.title === movie.original_title);
     if (!matched) {
       matched = goldenGlobeWinners.find(m => m.title === movie.title || m.title === movie.original_title);
+    }
+    if (!matched) {
+      matched = japanAcademyWinners.find(m => m.title === movie.title || m.title === movie.original_title);
     }
     if (!matched) {
       matched = trendingMovies.find(m => m.title === movie.title || m.title === movie.original_title);
