@@ -23,7 +23,7 @@ export default function Home() {
     
     // Set a random academy winner as the hero movie initially
     if (!heroMovie && academyWinners.length > 0) {
-      const randomHero = academyWinners[Math.floor(Math.random() * Math.min(20, academyWinners.length))];
+      const randomHero: any = academyWinners[Math.floor(Math.random() * Math.min(20, academyWinners.length))];
       const query = randomHero.searchQuery || randomHero.title;
       const searchYear = randomHero.releaseYear || randomHero.year;
       
