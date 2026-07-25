@@ -4,6 +4,7 @@ import { api } from '@/lib/api';
 import Link from 'next/link';
 import MovieDetails from '@/components/MovieDetails';
 import Modal from '@/components/Modal';
+import Breadcrumb from '@/components/Breadcrumb';
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.koremiyo.com';
 
@@ -117,12 +118,24 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
     }
   };
 
+  const breadcrumbItems = [
+    { name: 'ホーム', url: '/' },
+    { name: '映画作品一覧', url: '/' },
+    { name: movie.title, url: `/movie/${params.id}` }
+  ];
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }} />
+      
+      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '1rem 1rem 0 1rem' }}>
+        <Breadcrumb items={breadcrumbItems} />
+      </div>
+
       <Modal isFallback={true}>
         <MovieDetails movie={movie} jpProviders={jpProviders} isModal={true} isAmazonAvailable={isAmazonAvailable} />
       </Modal>
+      
       <footer className="site-footer">
         <div className="footer-content">
           <Link href="/contact" className="footer-link">

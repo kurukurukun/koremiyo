@@ -3,6 +3,7 @@ import Link from 'next/link';
 import MovieCard from '@/components/MovieCard';
 import Logo from '@/components/Logo';
 import HamburgerMenu from '@/components/HamburgerMenu';
+import Breadcrumb from '@/components/Breadcrumb';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
@@ -76,6 +77,12 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
     }
   };
 
+  const breadcrumbItems = [
+    { name: 'ホーム', url: '/' },
+    { name: 'まとめ記事一覧', url: '/articles' },
+    { name: article.title, url: `/articles/${params.id}` }
+  ];
+
   return (
     <>
       <script
@@ -91,8 +98,10 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
         <HamburgerMenu />
       </header>
       
-      <main className="main-content" style={{ maxWidth: '800px', margin: '0 auto', paddingTop: '100px' }}>
-        <article>
+      <main className="main-content" style={{ maxWidth: '800px', margin: '0 auto', paddingTop: '90px' }}>
+        <Breadcrumb items={breadcrumbItems} />
+        
+        <article style={{ marginTop: '1rem' }}>
           <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
             <div style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
               <i className="fa-regular fa-calendar"></i> {article.date}

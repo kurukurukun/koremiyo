@@ -1,6 +1,7 @@
 import QuickPick from '@/components/QuickPick';
 import Logo from '@/components/Logo';
 import HamburgerMenu from '@/components/HamburgerMenu';
+import Breadcrumb from '@/components/Breadcrumb';
 import Link from 'next/link';
 
 export const metadata = {
@@ -9,6 +10,11 @@ export const metadata = {
 };
 
 export default function QuickPickPage() {
+  const breadcrumbItems = [
+    { name: 'ホーム', url: '/' },
+    { name: '今日の映画を探す', url: '/quickpick' }
+  ];
+
   return (
     <>
       <header className="scrolled">
@@ -22,6 +28,7 @@ export default function QuickPickPage() {
 
       <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6rem 1rem 2rem' }}>
         <div style={{ width: '100%', maxWidth: '800px' }}>
+          <Breadcrumb items={breadcrumbItems} />
           <QuickPick />
         </div>
       </main>

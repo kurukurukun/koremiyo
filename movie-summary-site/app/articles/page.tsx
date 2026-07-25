@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getArticles } from '@/lib/data/articles';
 import Logo from '@/components/Logo';
 import HamburgerMenu from '@/components/HamburgerMenu';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export const metadata = {
   title: '映画特集・まとめ記事 | KOREMIYO',
@@ -11,17 +12,26 @@ export const metadata = {
 export default function ArticlesPage() {
   const articles = getArticles();
 
+  const breadcrumbItems = [
+    { name: 'ホーム', url: '/' },
+    { name: 'まとめ記事一覧', url: '/articles' }
+  ];
+
   return (
     <>
       <header className="scrolled">
         <div className="logo" style={{ cursor: 'pointer' }}>
-          <Logo />
+          <Link href="/">
+            <Logo />
+          </Link>
         </div>
         <HamburgerMenu />
       </header>
       
-      <main className="main-content" style={{ maxWidth: '800px', margin: '0 auto', paddingTop: '100px' }}>
-        <h1 style={{ marginBottom: '2rem', borderBottom: '2px solid var(--primary-color)', paddingBottom: '0.5rem', display: 'inline-block' }}>特集・まとめ記事</h1>
+      <main className="main-content" style={{ maxWidth: '800px', margin: '0 auto', paddingTop: '90px' }}>
+        <Breadcrumb items={breadcrumbItems} />
+        
+        <h1 style={{ marginBottom: '2rem', borderBottom: '2px solid var(--primary-color)', paddingBottom: '0.5rem', display: 'inline-block', marginTop: '1rem' }}>特集・まとめ記事</h1>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {articles.map((article) => (
