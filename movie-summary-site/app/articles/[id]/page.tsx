@@ -4,14 +4,36 @@ import MovieCard from '@/components/MovieCard';
 import Logo from '@/components/Logo';
 import HamburgerMenu from '@/components/HamburgerMenu';
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.koremiyo.com';
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const article = getArticleById(params.id);
   if (!article) return { title: '記事が見つかりません' };
   
+  const title = `${article.title} | コレミヨ(KOREMIYO) まとめ`;
+  const description = article.description || 'コレミヨ編集部によるおすすめ名作映画の厳選まとめ記事です。';
+  
   return {
-    title: `${article.title} | KOREMIYO`,
-    description: article.description,
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/articles/${params.id}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${baseUrl}/articles/${params.id}`,
+      type: "article",
+      publishedTime: article.date,
+      siteName: "コレミヨ (KOREMIYO)",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    }
   };
 }
 
@@ -28,11 +50,43 @@ export default function ArticlePage({ params }: { params: { id: string } }) {
     notFound();
   }
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": article.title,
+    "description": article.description,
+    "datePublished": article.date,
+    "dateModified": article.date,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `${baseUrl}/articles/${params.id}`
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "コレミヨ (KOREMIYO) 編集部",
+      "url": baseUrl
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "KOREMIYO",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/icon.png`
+      }
+    }
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <header className="scrolled">
         <div className="logo" style={{ cursor: 'pointer' }}>
-          <Logo />
+          <Link href="/">
+            <Logo />
+          </Link>
         </div>
         <HamburgerMenu />
       </header>

@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
 import { getArticles } from '@/lib/data/articles';
+import { knownMovieIds } from '@/lib/data/movie_ids';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.koremiyo.com'; // Update with actual domain if necessary
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.koremiyo.com';
   const articles = getArticles();
 
   // Static routes
@@ -14,16 +15,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/contact`,
+      url: `${baseUrl}/quickpick`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/articles`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/contact`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
     },
   ];
 
@@ -32,8 +39,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/articles/${article.id}`,
     lastModified: article.date ? new Date(article.date) : new Date(),
     changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
+
+  // Movie detail routes (dynamic SEO URLs)
+  const movieRoutes = knownMovieIds.map((movie) => ({
+    url: `${baseUrl}/movie/${movie.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...articleRoutes];
+  return [...staticRoutes, ...articleRoutes, ...movieRoutes];
 }
