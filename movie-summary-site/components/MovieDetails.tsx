@@ -6,6 +6,7 @@ import { goldenGlobeWinners } from '@/lib/data/golden_globe';
 import { japanAcademyWinners } from '@/lib/data/japan_academy';
 import { trendingMovies } from '@/lib/data/trending';
 import { useState, useEffect } from 'react';
+import MovieFAQ from '@/components/MovieFAQ';
 
 export default function MovieDetails({ movie, jpProviders, isModal = false, isAmazonAvailable = false }: { movie: any, jpProviders: any, isModal?: boolean, isAmazonAvailable?: boolean }) {
   const posterUrl = api.getImageUrl(movie.poster_path, 'w500');
@@ -239,6 +240,8 @@ export default function MovieDetails({ movie, jpProviders, isModal = false, isAm
               </div>
             </div>
           )}
+
+          <MovieFAQ movie={movie} jpProviders={jpProviders} isAmazonAvailable={isAmazonAvailable} />
         </div>
       </div>
     </div>
