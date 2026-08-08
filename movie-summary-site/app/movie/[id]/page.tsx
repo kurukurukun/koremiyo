@@ -6,7 +6,7 @@ import MovieDetails from '@/components/MovieDetails';
 import Modal from '@/components/Modal';
 import Breadcrumb from '@/components/Breadcrumb';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.koremiyo.com';
+const baseUrl = 'https://www.koremiyo.com';
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   try {

@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "./globals.css";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.koremiyo.com';
+const baseUrl = 'https://www.koremiyo.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

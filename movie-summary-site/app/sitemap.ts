@@ -3,7 +3,7 @@ import { getArticles } from '@/lib/data/articles';
 import { knownMovieIds } from '@/lib/data/movie_ids';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.koremiyo.com';
+  const baseUrl = 'https://www.koremiyo.com';
   const articles = getArticles();
 
   // Static routes

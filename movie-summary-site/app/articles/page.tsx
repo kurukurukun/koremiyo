@@ -7,6 +7,14 @@ import Breadcrumb from '@/components/Breadcrumb';
 export const metadata = {
   title: '映画特集・まとめ記事 | KOREMIYO',
   description: 'KOREMIYOが独自の視点で厳選した映画特集やおすすめまとめ記事の一覧です。',
+  alternates: {
+    canonical: 'https://www.koremiyo.com/articles',
+  },
+  openGraph: {
+    title: '映画特集・まとめ記事 | KOREMIYO',
+    description: 'KOREMIYOが独自の視点で厳選した映画特集やおすすめまとめ記事の一覧です。',
+    url: 'https://www.koremiyo.com/articles',
+  }
 };
 
 export default function ArticlesPage() {

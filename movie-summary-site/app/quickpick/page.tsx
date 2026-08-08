@@ -7,6 +7,14 @@ import Link from 'next/link';
 export const metadata = {
   title: '今日の映画を探す | KOREMIYO',
   description: '今の気分と時間を選ぶだけで、あなたにピッタリの映画を10秒で提案します。',
+  alternates: {
+    canonical: 'https://www.koremiyo.com/quickpick',
+  },
+  openGraph: {
+    title: '今日の映画を探す | KOREMIYO',
+    description: '今の気分と時間を選ぶだけで、あなたにピッタリの映画を10秒で提案します。',
+    url: 'https://www.koremiyo.com/quickpick',
+  }
 };
 
 export default function QuickPickPage() {
